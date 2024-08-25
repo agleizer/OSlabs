@@ -1,4 +1,4 @@
-//Exercício 5 - Alan Gleizer - Caio Corsini - Tiago Teraoka
+//Exercício 5 - Alan Gleizer - Caio Corsini
 #include <stdio.h>
 #include <stdlib.h>
 
