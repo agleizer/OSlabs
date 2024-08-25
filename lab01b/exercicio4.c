@@ -1,4 +1,4 @@
-//exercicio 4 - Caio Corsini
+//exercicio 4 - Alan Gleizer - Caio Corsini - Gilberto de Melo
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
