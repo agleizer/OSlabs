@@ -1,4 +1,4 @@
-//Exercicio 1 - Alan Gleizer - Caio Corsini - Gilberto de Melo
+//Exercicio 1 - Alan Gleizer - Caio Corsini - Tiago Teraoka
 #include <stdio.h>
 
 void main(void) {
