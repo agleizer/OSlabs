@@ -1,14 +1,13 @@
 /*
-Exercício 1: Abrir e Ler um Arquivo
-Escreva um programa em C que realize as seguintes operações:
-    1. Abra um arquivo de texto chamado ‘lab2_ex1.txt’ em modo leitura.
-    2. Verifique se o arquivo foi aberto com sucesso. Se não, exiba uma mensagem de erro e encerre o programa.
-    3. Leia o conteúdo do arquivo para um buffer.
-    4. Exiba o conteúdo lido na tela.
-    5. Feche o arquivo após a leitura.
+Exercício 2: Contar Linhas em um Arquivo
+Escreva um programa em C que:
+    1. Abra um arquivo de texto (lab2_ex2.txt) e leia seu conteúdo.
+    2. Conte quantas linhas existem no arquivo.
+    3. Exiba o número total de linhas na tela.
 Requisitos:
-    • O buffer deve ter um tamanho de 128 bytes.
-    • Certifique-se de adicionar um caractere nulo (\0) ao final do buffer após a leitura.
+    • Utilize um buffer de 128 bytes para ler o arquivo em partes.
+    • A contagem de linhas deve ser feita identificando os caracteres de quebra de linha (\n).
+    • O loop deve continuar até que todo o arquivo tenha sido processado.
 */
 
 #include <stdio.h>   // printf, perror
@@ -22,7 +21,7 @@ Requisitos:
 int main() {
     
     // definicao das variáveis
-    const char *arquivoEntrada = "lab2_ex1.txt"; // nome do arquivo esperado
+    const char *arquivoEntrada = "lab2_ex2.txt"; // nome do arquivo esperado
     int fdEntrada; // file descriptor para armazendar retorno da função open
     ssize_t bytesLidos; // para armazenar retorno da função read
     char buffer[TAM_BUFFER]; // buffer para armazenar conteúdo lido
@@ -39,10 +38,13 @@ int main() {
 
     // leitura do arquivo e armazenamento em um array de char
     int indiceConteudo = 0; // utlimo indice escrito em conteudo para poder colocar \0
+    int qtdLinhas = 0; 
 
-    while ((bytesLidos = read(fdEntrada, buffer, sizeof(buffer) - 1)) > 0) {
+    while ((bytesLidos = read(fdEntrada, buffer, sizeof(buffer))) > 0) {
         for (int i = 0; i < bytesLidos; i++) {
+            if (buffer[i] == '\n') qtdLinhas++;
             conteudo[indiceConteudo++] = buffer[i];
+            
         }
     }
 
@@ -54,6 +56,8 @@ int main() {
     for (int i = 0; i < indiceConteudo; i++) {
         printf("%c", conteudo[i]);
     }
+
+    printf("\nQuantidade de linhas = %d\n", qtdLinhas);
 
     close(fdEntrada);
 
