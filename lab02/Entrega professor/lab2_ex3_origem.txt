@@ -1,0 +1,6 @@
+A Arquitetura de von Neumann (de John von Neumann, pronunciado Nóimánn) é uma
+arquitetura de computador que se caracteriza pela possibilidade de uma máquina digital 
+armazenar seus programas no mesmo espaço de memória que os dados, podendo assim 
+manipular tais programas. Esta arquitetura é um projeto modelo de um computador digital 
+de programa armazenado que utiliza uma unidade de processamento (CPU) e uma de 
+armazenamento ("memória") para comportar, respectivamente, instruções e dados.
