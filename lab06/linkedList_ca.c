@@ -1,8 +1,10 @@
+// Lab 06 Alocacao dinamica de memoria
+// Alan Gleizer - 10416804
+// Caio Corsini - 10342005
 #include <stdio.h>
 #include <stdlib.h>
 
-//cd "C:\Users\caiof\Documentos disco local\aaaComputacao_faculdade\sistemas operacionais\lab6 malloc" && gcc -o linkedList linkedList.c && linkedList
-
+// O struct da celula (node)
 struct reg {
     int conteudo;
     struct reg *prox;
@@ -10,6 +12,7 @@ struct reg {
 typedef struct reg celula;
 
 //-------- 2 --------//
+// Funcao que imprime toda a linked list do head ate o tail
 void imprimirValores(celula *cabeca){
     celula *atual = cabeca;
     while(atual != NULL){
@@ -19,9 +22,21 @@ void imprimirValores(celula *cabeca){
     printf("\n");
 }
 
+//-------- 4 --------//
+// Funcao que remove todos os nos da linked list do head ate o tail
+void removerCelulas(celula *cabeca){
+    celula *atual = cabeca;
+    while(atual != NULL){
+        celula *aux = atual->prox;
+        free(atual);
+        atual = aux;
+    }
+}
+
 void main(){
 
     //-------- 1 --------//
+    // Criando os tres nodes para simular manualmente
     celula *cabeca = (celula*) malloc(sizeof(celula));
     celula *meio = (celula*) malloc(sizeof(celula));
     celula *rabo = (celula*) malloc(sizeof(celula));
@@ -41,5 +56,8 @@ void main(){
     //-------- 3 --------//
     int quantMemoGasta = sizeof(celula);
     printf("A quantidade de memoria gasta por intancia da celula eh: %d", quantMemoGasta);
+
+    //-------- 4 --------//
+    removerCelulas(cabeca);
 
 }
