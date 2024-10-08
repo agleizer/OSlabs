@@ -33,6 +33,40 @@ void removerCelulas(celula *cabeca){
     }
 }
 
+void exercicio6() {
+    // Ler a informacao de memoria do sistema (em /proc/meminfo)
+    FILE *meminfo = fopen("/proc/meminfo", "r");
+    if (meminfo == NULL) {
+        perror("Erro ao abrir /proc/meminfo");
+        return;
+    }
+
+    long memTotalKB = 0;
+    char buffer[256];
+
+    // ler o arquivo ate achar a linha MemTotal, onde temos a informacao
+    while (fgets(buffer, sizeof(buffer), meminfo)) {
+        if (sscanf(buffer, "MemTotal: %ld kB", &memTotalKB) == 1) {
+            break;
+        }
+    }
+
+    // Fecha o arquivo
+    fclose(meminfo);
+
+    // Converte kilobytes para bytes
+    long memTotalBytes = memTotalKB * 1024;
+
+    // Imprime o total de RAM em bytes
+    printf("Total de RAM: %ld bytes\n", memTotalBytes);
+
+    // Calculo da qtd de celulas que caberiam
+    long qtdCeculasMem = memTotalBytes / sizeof(celula);
+    printf("Considerando uma célula de %ld bytes e RAM de %ld bytes, caberiam %ld células na memória.\n", sizeof(celula), memTotalBytes, qtdCeculasMem);
+
+    return;
+}
+
 void main(){
 
     //-------- 1 --------//
@@ -55,9 +89,12 @@ void main(){
 
     //-------- 3 --------//
     int quantMemoGasta = sizeof(celula);
-    printf("A quantidade de memoria gasta por intancia da celula eh: %d", quantMemoGasta);
+    printf("A quantidade de memoria gasta por intancia da celula eh: %d.\n", quantMemoGasta);
 
     //-------- 4 --------//
     removerCelulas(cabeca);
+
+    //-------- 6 --------//
+    exercicio6();
 
 }
