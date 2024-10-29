@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #define TAMANHO_FRAME 4096
+#define TAMANHO_PAGINA 4096
 
 typedef struct {
     int id;
@@ -35,16 +36,35 @@ typedef struct {
 void inicializarMemoFisica(frame memoriaFisica[], int n){
     frame novoFrame;
     for(int i=0; i<n; i++){
-        novoFrame.dados = 0;
+        novoFrame.dados = (char *)malloc(TAMANHO_FRAME * sizeof(char));
         novoFrame.id = i;
         novoFrame.ocupado = false;
-        novoFrame.pagina_id = 0;
-        novoFrame.processo_id = 0;
+        novoFrame.pagina_id = -1;
+        novoFrame.processo_id = -1;
         memoriaFisica[i] = novoFrame;
     }
 }
 
-//void inicializarMemoVirtual()
+void inicializarMemoVirtual(pagina memoriaVirtual[], int n) {
+    pagina novaPagina;
+    for(int i=0; i<n; i++){
+        novaPagina.dados = (char *)malloc(TAMANHO_PAGINA * sizeof(char));
+        novaPagina.id = i;
+        novaPagina.alterado = false;
+        novaPagina.pagina_id = -1;
+        novaPagina.processo_id = -1;
+        memoriaVirtual[i] = novaPagina;
+    }
+}
+
+void inicializarTabela(linhaTabelaDePaginas linhas_tabela[], int n){
+    linhaTabelaDePaginas novaLinha;
+    for (int i = 0; i < n; i++) {
+        novaLinha.end_frame = NULL;
+        novaLinha.end_pagina = NULL;
+        linhas_tabela[i] = novaLinha;
+    }
+}
 
 
 void main(){
