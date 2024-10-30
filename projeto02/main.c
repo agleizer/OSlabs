@@ -5,7 +5,8 @@
 #define TAMANHO_FRAME 4096
 #define TAMANHO_PAGINA 4096
 #define NUM_FRAMES 10
-#define NUM_PAGINAS 25
+#define NUM_PAGINAS 25     // isso seria a mem virtual, que não vamos implementar
+#define NUM_PAGINAS_PROC 5 // por processo
 
 // Frame individual da mem física
 typedef struct
@@ -22,7 +23,7 @@ typedef struct
 typedef struct
 {
     int id;
-    int processo_id;
+    int processo_id; // aaaaacho que não precisa, pois só vamos usar dentro do espaço de endereçamento, que é dentro de um processo..
     char *dados;
 } pagina;
 
@@ -30,22 +31,23 @@ typedef struct
 typedef struct
 {
     int pid;
-    int *enderecos;
+    int *enderecos; // ainda não entendi o que é isso.......
     int num_enderecos;
     int tamanho_processo;
+    pagina *espacoEnderecamento;         //[NUM_PAGINAS_PROC]
+    linhaTabelaDePaginas *tabelaPaginas; //[NUM_PAGINAS_PROC]
 } processo;
 
 // linha indiviual da tebela de páginas
 typedef struct
 {
-    frame *end_frame; // PERGUNTA PRO LUCAS: será que isso aqui deve ser um endereço mesmo? na realidade, é, mas no nosso simulador pode ser um INT
-    pagina *end_pagina;
+    int end_pagina; // endereço / indice da pagina do espaço de endereçamento do processo
+    int end_frame;  // endereço / indice do frame na mem fisica
 } linhaTabelaDePaginas;
 
 // INICIALIZAÇÕES
 // ALAN: tirei n da assiantura da função e substitui pelos defines
 // também não acredito que preciamos criar um novo frame e copia-lo p a memoria, a mem já é um array incializado! basta acessar mem[i]
-
 void inicializarMemoFisica(frame memoriaFisica[])
 {
     for (int i = 0; i < NUM_FRAMES; i++)
@@ -59,6 +61,7 @@ void inicializarMemoFisica(frame memoriaFisica[])
     }
 }
 
+// aqui, estaríamos simulando a mem. virtual em disco, que o Lucas disse ser opcional
 void inicializarMemoVirtual(pagina memoriaVirtual[])
 {
     for (int i = 0; i < NUM_PAGINAS; i++)
@@ -73,13 +76,23 @@ void inicializarTabela(linhaTabelaDePaginas linhas_tabela[])
 {
     for (int i = 0; i < NUM_PAGINAS; i++)
     {
-        linhas_tabela[i].end_frame = NULL; // ALTERAR se virar INT
-        linhas_tabela[i].end_pagina = NULL;
+        linhas_tabela[i].end_pagina = i; // paginas são 0 a max
+        linhas_tabela[i].end_frame = -1; // inicializa com -1 pois ainda não está na mem. fisica
     }
 }
 
-// FUNÇÕES DE MAPEAMENTO
+void inicializarProcesso(processo *proc, int pid, int numEnderecos)
+{
+    proc->pid = pid;
+    proc->num_enderecos = numEnderecos;
+    proc->enderecos = (int *)malloc(proc->num_enderecos * sizeof(int));
+    proc->tamanho_processo = 2000; // NAO FACO IDEIA DO QUE VAI AQUI
+    proc->espacoEnderecamento = (pagina *)malloc(NUM_PAGINAS_PROC * sizeof(pagina));
+    proc->tabelaPaginas = (linhaTabelaDePaginas *)malloc(NUM_PAGINAS_PROC * sizeof(linhaTabelaDePaginas));
+    inicializarTabela(proc->tabelaPaginas); // Inicializa a tabela de páginas do processo
+}
 
+// FUNÇÕES DE MAPEAMENTO
 int buscarIndicePorEnderecoVirtual(linhaTabelaDePaginas tabelaPaginas[], int end_pagina)
 {
     for (int i = 0; i < NUM_PAGINAS; i++)
@@ -127,6 +140,6 @@ void main()
     */
 
     frame memoriaFisica[NUM_FRAMES];
-    pagina memoriaVirtual[NUM_PAGINAS];
+    pagina memoriaVirtual[NUM_PAGINAS]; // não vamos usar..
     linhaTabelaDePaginas tabelaPaginas[NUM_PAGINAS];
 }
