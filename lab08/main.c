@@ -10,12 +10,7 @@
 #define NUM_PAGINAS_PROC 5 // por processo
 
 // ---------- FUNÇÕES PARA SIMULAÇÃO DE PAUSA ----------
-/* recomendação da internet parece ser usar funções diferentes no windows e linux.
-vou deixar ambas implementadas, pois acredito que vamos desenvolver mais no windows
-mas a entrega é em linux... */
-
 // PARA LINUX
-/*
 #include <unistd.h>
 
 void pausa(int milisegundos)
@@ -23,8 +18,8 @@ void pausa(int milisegundos)
     int microsegundos = milisegundos * 1000;
     usleep(500000);
 }
-*/
 
+/*
 // PARA WINDOWS
 #include <windows.h>
 
@@ -32,6 +27,7 @@ void pausa(int milisegundos)
 {
     Sleep(milisegundos);
 }
+*/
 
 // ---------- ESTRUTURAS ----------
 // Frame individual da mem física
@@ -230,18 +226,12 @@ int traduzirEndereco(int endereco_virtual, processo *proc, frame memoriaFisica[]
 
 void main()
 {
-/*
-int tam_memoriaFisica = NUM_FRAMES*sizeof(frame);
-int tam_memoriaVirtual = NUM_PAGINAS*sizeof(pagina);
-int tam_tabelaPaginas = NUM_PAGINAS*sizeof(linhaTabelaDePaginas);
-*/
-// pagina memoriaVirtual[NUM_PAGINAS]; // não vamos usar..
-
-// Configura o terminal do powershell para UTF-8 no Windows.. remover na entrega do projeto
-#ifdef _WIN32
-    system("chcp 65001 > nul");
-#endif
-
+    /*
+    int tam_memoriaFisica = NUM_FRAMES*sizeof(frame);
+    int tam_memoriaVirtual = NUM_PAGINAS*sizeof(pagina);
+    int tam_tabelaPaginas = NUM_PAGINAS*sizeof(linhaTabelaDePaginas);
+    */
+    // pagina memoriaVirtual[NUM_PAGINAS]; // não vamos usar..
     frame memoriaFisica[NUM_FRAMES];
     inicializarMemoFisica(memoriaFisica);
 
