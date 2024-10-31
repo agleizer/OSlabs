@@ -8,6 +8,31 @@
 #define NUM_PAGINAS 25     // isso seria a mem virtual, que não vamos implementar
 #define NUM_PAGINAS_PROC 5 // por processo
 
+// ---------- FUNÇÕES PARA SIMULAÇÃO DE PAUSA ----------
+/* recomendação da internet parece ser usar funções diferentes no windows e linux.
+vou deixar ambas implementadas, pois acredito que vamos desenvolver mais no windows
+mas a entrega é em linux... */
+
+// PARA LINUX
+/*
+#include <unistd.h>
+
+void pausa(int milisegundos)
+{
+    int microsegundos = milisegundos * 1000;
+    usleep(500000);
+}
+*/
+
+// PARA WINDOWS
+#include <windows.h>
+
+void pausa(int milisegundos)
+{
+    Sleep(milisegundos);
+}
+
+// ---------- ESTRUTURAS ----------
 // Frame individual da mem física
 typedef struct
 {
@@ -27,6 +52,13 @@ typedef struct
     char *dados;
 } pagina;
 
+// linha indiviual da tebela de páginas
+typedef struct
+{
+    int end_pagina; // endereço / indice da pagina do espaço de endereçamento do processo
+    int end_frame;  // endereço / indice do frame na mem fisica
+} linhaTabelaDePaginas;
+
 // processo individual
 typedef struct
 {
@@ -38,16 +70,7 @@ typedef struct
     linhaTabelaDePaginas *tabelaPaginas; //[NUM_PAGINAS_PROC]
 } processo;
 
-// linha indiviual da tebela de páginas
-typedef struct
-{
-    int end_pagina; // endereço / indice da pagina do espaço de endereçamento do processo
-    int end_frame;  // endereço / indice do frame na mem fisica
-} linhaTabelaDePaginas;
-
-// INICIALIZAÇÕES
-// ALAN: tirei n da assiantura da função e substitui pelos defines
-// também não acredito que preciamos criar um novo frame e copia-lo p a memoria, a mem já é um array incializado! basta acessar mem[i]
+// ---------- INICIALIZAÇÕES ----------
 void inicializarMemoFisica(frame memoriaFisica[])
 {
     for (int i = 0; i < NUM_FRAMES; i++)
@@ -81,18 +104,29 @@ void inicializarTabela(linhaTabelaDePaginas linhas_tabela[])
     }
 }
 
-void inicializarProcesso(processo *proc, int pid, int numEnderecos)
+void inicializarProcesso(processo *proc, int pid /*, int numEnderecos*/)
 {
     proc->pid = pid;
-    proc->num_enderecos = numEnderecos;
-    proc->enderecos = (int *)malloc(proc->num_enderecos * sizeof(int));
-    proc->tamanho_processo = 2000; // NAO FACO IDEIA DO QUE VAI AQUI
+    proc->num_enderecos = NUM_PAGINAS_PROC; // numEnderecos;
+    proc->enderecos = (int *)malloc(NUM_PAGINAS_PROC * sizeof(int));
+
+    // os endereços que vão ser acessados são simplesmente os indices da array de espaço de endereçamento.. me parece redundante, mas vamos lá
+
+    for (int i = 0; i < NUM_PAGINAS_PROC; i++)
+    {
+        proc->enderecos[i] = i; // por isso é meio ridiculo.. essa lista é = os indices do espaço de endereçamento....
+                                // poderiamos popular com inteiros de 0 até NUM_PAGINAS_PROC mas com a ordem aleatória.. seria melhor?
+    }
+
+    proc->tamanho_processo = NUM_PAGINAS_PROC * TAMANHO_PAGINA; // NAO FACO IDEIA DO QUE VAI AQUI, talvez NUM_PAGINAS_PROC * TAMANHO_PAGINA
     proc->espacoEnderecamento = (pagina *)malloc(NUM_PAGINAS_PROC * sizeof(pagina));
     proc->tabelaPaginas = (linhaTabelaDePaginas *)malloc(NUM_PAGINAS_PROC * sizeof(linhaTabelaDePaginas));
     inicializarTabela(proc->tabelaPaginas); // Inicializa a tabela de páginas do processo
 }
 
-// FUNÇÕES DE MAPEAMENTO
+// ---------- FUNÇÕES DE GERENCIAMENTO DA TABELA DE PAGINAS ----------
+
+// retorna o indice de um endereço virtual no espaço de endereçamento do processo
 int buscarIndicePorEnderecoVirtual(linhaTabelaDePaginas tabelaPaginas[], int end_pagina)
 {
     for (int i = 0; i < NUM_PAGINAS; i++)
@@ -105,41 +139,127 @@ int buscarIndicePorEnderecoVirtual(linhaTabelaDePaginas tabelaPaginas[], int end
     return -1; // Não encontrado
 }
 
-// repensar... não faz sentido... preciso de 1 que busque pelo end_virtual na tabela, uma que aloca, uma que desaloca...
-/*
-void mapearEndereco(linhaTabelaDePaginas tabelaPaginas[], int end_pagina, int end_frame)
+// ---------- FUNÇÕES DE MAPEAMENTO ----------
+
+// procura por um frame livre na mem. física, retorna o indíce ou -1
+int buscarFrameLivre(frame memoriaFisica[])
 {
-    int indice = buscarIndicePorEnderecoVirtual(tabelaPaginas, end_pagina);
-    if (indice == -1)
+    for (int i = 0; i < NUM_FRAMES; i++)
     {
-        // Busca um índice livre
-        for (int i = 0; i < NUM_PAGINAS; i++)
+        if (!memoriaFisica[i].ocupado)
         {
-            if (tabelaPaginas[i].end_frame == -1)
-            { // Checa se está livre
-                tabelaPaginas[i].end_pagina = end_pagina;
-                tabelaPaginas[i].end_frame = end_frame;
-                break;
-            }
+            return i;
         }
     }
-    else
+    return -1; // nenhum frame livre
+}
+
+// alocar um frame da memória física para uma página de um processo
+int alocarFrame(frame memoriaFisica[], processo *proc, int end_pagina)
+{
+    int indice_frame = buscarFrameLivre(memoriaFisica);
+    if (indice_frame == -1)
     {
-        // Atualiza o endereço físico no índice encontrado
-        tabelaPaginas[indice].end_frame = end_frame;
+        printf("LOG: Sem frames livres na memória física.\n"); // TODO: alterar para fprintf ou similar
+        return -1;
+    }
+
+    // Atualiza o frame na memória física
+    memoriaFisica[indice_frame].ocupado = true;
+    memoriaFisica[indice_frame].processo_id = proc->pid;
+    memoriaFisica[indice_frame].pagina_id = end_pagina;
+
+    // Atualiza a tabela de páginas do processo
+    proc->tabelaPaginas[end_pagina].end_pagina = end_pagina;
+    proc->tabelaPaginas[end_pagina].end_frame = indice_frame;
+
+    return indice_frame;
+}
+
+// desalocar um frame da memória física de uma página de um processo
+void desalocarFrame(frame memoriaFisica[], processo *proc, int end_pagina)
+{
+    int indice_frame = proc->tabelaPaginas[end_pagina].end_frame;
+    if (indice_frame != -1)
+    {
+        // Libera o frame na memória física
+        memoriaFisica[indice_frame].ocupado = false;
+        memoriaFisica[indice_frame].processo_id = -1;
+        memoriaFisica[indice_frame].pagina_id = -1;
+
+        // Atualiza a tabela de páginas do processo para indicar que a página não está mais na memória física
+        proc->tabelaPaginas[end_pagina].end_frame = -1;
     }
 }
-*/
+
+// traduzir endereço virtual em físico
+int traduzirEndereco(int endereco_virtual, processo *proc, frame memoriaFisica[])
+{
+
+    /*
+    // esse é o jeito correto, que aparece em todos os foruns..
+    // mas, como nossos endereços são indices dos arrays, não me parece fazer sentido
+    int pagina_id = endereco_virtual / TAMANHO_PAGINA;
+    int offset = endereco_virtual % TAMANHO_PAGINA;
+    */
+
+    int pagina_id = endereco_virtual; // o processo que acessar uma pagina X (indice de 0 a N do array espaço de endereçamento E na tabela de páginas)
+    int indice_frame = proc->tabelaPaginas[pagina_id].end_frame;
+
+    if (indice_frame == -1)
+    {
+        printf("LOG: Page fault: Página %d não está na memória física.\n", pagina_id); // TODO: alterar para fprintf ou similar
+        return -1;                                                                     // Indica page fault
+    }
+
+    return indice_frame; // == endereço do frame na memória física
+}
 
 void main()
 {
-    /*
-    int tam_memoriaFisica = NUM_FRAMES*sizeof(frame);
-    int tam_memoriaVirtual = NUM_PAGINAS*sizeof(pagina);
-    int tam_tabelaPaginas = NUM_PAGINAS*sizeof(linhaTabelaDePaginas);
-    */
+/*
+int tam_memoriaFisica = NUM_FRAMES*sizeof(frame);
+int tam_memoriaVirtual = NUM_PAGINAS*sizeof(pagina);
+int tam_tabelaPaginas = NUM_PAGINAS*sizeof(linhaTabelaDePaginas);
+*/
+// pagina memoriaVirtual[NUM_PAGINAS]; // não vamos usar..
+
+// Configura o terminal para UTF-8 no Windows
+#ifdef _WIN32
+    system("chcp 65001 > nul");
+#endif
 
     frame memoriaFisica[NUM_FRAMES];
-    pagina memoriaVirtual[NUM_PAGINAS]; // não vamos usar..
-    linhaTabelaDePaginas tabelaPaginas[NUM_PAGINAS];
+    inicializarMemoFisica(memoriaFisica);
+
+    processo proc1;
+    inicializarProcesso(&proc1, 1);
+
+    printf("Alocando frames para as páginas do processo 1...\n");
+    for (int i = 0; i < NUM_PAGINAS_PROC; i++)
+    {
+        alocarFrame(memoriaFisica, &proc1, i);
+    }
+
+    printf("\nTraduzindo endereços virtuais do processo 1...\n");
+    for (int i = 0; i < NUM_PAGINAS_PROC; i++)
+    {
+        int endereco_fisico = traduzirEndereco(i, &proc1, memoriaFisica);
+        if (endereco_fisico != -1)
+        {
+            printf("Endereço virtual %d mapeado para endereço físico %d\n", i, endereco_fisico);
+        }
+    }
+
+    // Desalocação para verificação adicional
+    printf("\nDesalocando frames do processo 1...\n");
+    for (int i = 0; i < NUM_PAGINAS_PROC; i++)
+    {
+        desalocarFrame(memoriaFisica, &proc1, i);
+    }
+
+    // Liberar memória alocada
+    free(proc1.enderecos);
+    free(proc1.espacoEnderecamento);
+    free(proc1.tabelaPaginas);
 }
