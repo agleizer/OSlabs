@@ -6,7 +6,7 @@
 #define TAMANHO_FRAME 4096
 #define TAMANHO_PAGINA 4096
 #define NUM_FRAMES 10
-#define NUM_PAGINAS 25     // isso seria a mem virtual, que provavelmente não vamos implementar
+#define NUM_PAGINAS 25
 #define NUM_PAGINAS_PROC 5 // por processo
 
 // ---------- FUNÇÕES PARA SIMULAÇÃO DE PAUSA ----------
@@ -45,7 +45,7 @@ typedef struct
 typedef struct
 {
     int id;
-    int processo_id; // aaaaacho que não precisa, pois só vamos usar dentro do espaço de endereçamento, que é dentro de um processo..
+    int processo_id;
     char *dados;
 } pagina;
 
@@ -60,7 +60,7 @@ typedef struct
 typedef struct
 {
     int pid;
-    int *enderecos; // ainda não entendi o que é isso.......
+    int *enderecos;
     int num_enderecos;
     int tamanho_processo;
     pagina *espacoEnderecamento;         //[NUM_PAGINAS_PROC]
@@ -101,21 +101,18 @@ void inicializarTabela(linhaTabelaDePaginas linhas_tabela[])
     }
 }
 
-void inicializarProcesso(processo *proc, int pid /*, int numEnderecos*/)
+void inicializarProcesso(processo *proc, int pid)
 {
     proc->pid = pid;
     proc->num_enderecos = NUM_PAGINAS_PROC; // numEnderecos;
     proc->enderecos = (int *)malloc(NUM_PAGINAS_PROC * sizeof(int));
 
-    // os endereços que vão ser acessados são simplesmente os indices da array de espaço de endereçamento.. me parece redundante, mas vamos lá
-
     for (int i = 0; i < NUM_PAGINAS_PROC; i++)
     {
-        proc->enderecos[i] = i; // por isso é meio ridiculo.. essa lista é = os indices do espaço de endereçamento....
-                                // poderiamos popular com inteiros de 0 até NUM_PAGINAS_PROC mas com a ordem aleatória.. seria melhor?
+        proc->enderecos[i] = i; 
     }
 
-    proc->tamanho_processo = NUM_PAGINAS_PROC * TAMANHO_PAGINA; // NAO FACO IDEIA DO QUE VAI AQUI, talvez NUM_PAGINAS_PROC * TAMANHO_PAGINA
+    proc->tamanho_processo = NUM_PAGINAS_PROC * TAMANHO_PAGINA;
     proc->espacoEnderecamento = (pagina *)malloc(NUM_PAGINAS_PROC * sizeof(pagina));
     proc->tabelaPaginas = (linhaTabelaDePaginas *)malloc(NUM_PAGINAS_PROC * sizeof(linhaTabelaDePaginas));
     inicializarTabela(proc->tabelaPaginas); // Inicializa a tabela de páginas do processo
@@ -157,7 +154,7 @@ int alocarFrame(frame memoriaFisica[], processo *proc, int end_pagina)
     int indice_frame = buscarFrameLivre(memoriaFisica);
     if (indice_frame == -1)
     {
-        printf("LOG: Sem frames livres na memória física.\n"); // TODO: alterar para fprintf ou similar
+        printf("LOG: Sem frames livres na memória física.\n");
         return -1;
     }
 
@@ -204,19 +201,12 @@ void desalocarFrame(frame memoriaFisica[], processo *proc, int end_pagina)
 int traduzirEndereco(int endereco_virtual, processo *proc, frame memoriaFisica[])
 {
 
-    /*
-    // esse é o jeito correto, que aparece em todos os foruns..
-    // mas, como nossos endereços são indices dos arrays, não me parece fazer sentido
-    int pagina_id = endereco_virtual / TAMANHO_PAGINA;
-    int offset = endereco_virtual % TAMANHO_PAGINA;
-    */
-
     int pagina_id = endereco_virtual; // o processo que acessar uma pagina X (indice de 0 a N do array espaço de endereçamento E na tabela de páginas)
     int indice_frame = proc->tabelaPaginas[pagina_id].end_frame;
 
     if (indice_frame == -1)
     {
-        printf("LOG: Page fault: Página %d não está na memória física.\n", pagina_id); // TODO: alterar para fprintf ou similar
+        printf("LOG: Page fault: Página %d não está na memória física.\n", pagina_id);
         pausa(20);                                                                     // pausa para simulação do acesso ao disco
         return -1;                                                                     // Indica page fault
     }
@@ -226,12 +216,6 @@ int traduzirEndereco(int endereco_virtual, processo *proc, frame memoriaFisica[]
 
 void main()
 {
-    /*
-    int tam_memoriaFisica = NUM_FRAMES*sizeof(frame);
-    int tam_memoriaVirtual = NUM_PAGINAS*sizeof(pagina);
-    int tam_tabelaPaginas = NUM_PAGINAS*sizeof(linhaTabelaDePaginas);
-    */
-    // pagina memoriaVirtual[NUM_PAGINAS]; // não vamos usar..
     frame memoriaFisica[NUM_FRAMES];
     inicializarMemoFisica(memoriaFisica);
 
