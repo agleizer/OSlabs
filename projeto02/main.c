@@ -96,9 +96,10 @@ void inicializarMemoVirtual(pagina memoriaVirtual[])
     }
 }
 
+// Inicializa a tabela de páginas do processo com espaço de endereçamento
 void inicializarTabela(linhaTabelaDePaginas linhas_tabela[])
 {
-    for (int i = 0; i < NUM_PAGINAS; i++)
+    for (int i = 0; i < NUM_PAGINAS_PROC; i++)
     {
         linhas_tabela[i].end_pagina = i; // paginas são 0 a max
         linhas_tabela[i].end_frame = -1; // inicializa com -1 pois ainda não está na mem. fisica
@@ -121,6 +122,12 @@ void inicializarProcesso(processo *proc, int pid /*, int numEnderecos*/)
 
     proc->tamanho_processo = NUM_PAGINAS_PROC * TAMANHO_PAGINA; // NAO FACO IDEIA DO QUE VAI AQUI, talvez NUM_PAGINAS_PROC * TAMANHO_PAGINA
     proc->espacoEnderecamento = (pagina *)malloc(NUM_PAGINAS_PROC * sizeof(pagina));
+
+    for (int i = 0; i < NUM_PAGINAS_PROC; i++)
+    {
+        proc->espacoEnderecamento[i].dados = (char *)malloc(TAMANHO_PAGINA * sizeof(char));
+    }
+
     proc->tabelaPaginas = (linhaTabelaDePaginas *)malloc(NUM_PAGINAS_PROC * sizeof(linhaTabelaDePaginas));
     inicializarTabela(proc->tabelaPaginas); // Inicializa a tabela de páginas do processo
 }
@@ -228,6 +235,25 @@ int traduzirEndereco(int endereco_virtual, processo *proc, frame memoriaFisica[]
     return indice_frame; // == endereço do frame na memória física
 }
 
+void liberarMemoriaProcesso(processo *proc)
+{
+    free(proc->enderecos);
+    for (int i = 0; i < NUM_PAGINAS_PROC; i++)
+    {
+        free(proc->espacoEnderecamento[i].dados);
+    }
+    free(proc->espacoEnderecamento);
+    free(proc->tabelaPaginas);
+}
+
+void liberarMemoriaFisica(frame memoriaFisica[])
+{
+    for (int i = 0; i < NUM_FRAMES; i++)
+    {
+        free(memoriaFisica[i].dados);
+    }
+}
+
 void main()
 {
 /*
@@ -272,7 +298,6 @@ int tam_tabelaPaginas = NUM_PAGINAS*sizeof(linhaTabelaDePaginas);
     }
 
     // Liberar memória alocada
-    free(proc1.enderecos);
-    free(proc1.espacoEnderecamento);
-    free(proc1.tabelaPaginas);
+    liberarMemoriaProcesso(&proc1);
+    liberarMemoriaFisica(memoriaFisica);
 }
