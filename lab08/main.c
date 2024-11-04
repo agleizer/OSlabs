@@ -1,3 +1,7 @@
+// Tarefa - Paginacao
+// Alan Gleizer
+// Caio Corsini
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
