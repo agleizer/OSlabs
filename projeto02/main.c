@@ -2,12 +2,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include "fila.h"
 
-#define TAMANHO_FRAME 4096
-#define TAMANHO_PAGINA 4096
-#define NUM_FRAMES 10
-#define NUM_PAGINAS 25     // isso seria a mem virtual, que provavelmente não vamos implementar
-#define NUM_PAGINAS_PROC 5 // por processo
+// cp "/mnt/c/Users/caiof/Documentos disco local/aaaComputacao_faculdade/sistemas operacionais/paragit2/OSlabs/projeto02/main.c" ~/projeto/ && gcc main.c -o main && ~/projeto/main
+// cp "/mnt/c/Users/caiof/Documentos disco local/aaaComputacao_faculdade/sistemas operacionais/paragit2/OSlabs/projeto02/"*.c && cp "/mnt/c/Users/caiof/Documentos disco local/aaaComputacao_faculdade/sistemas operacionais/paragit2/OSlabs/projeto02/"*.h ~/projeto/ && ~/projeto/ && gcc ~/projeto/main.c ~/projeto/fila.c -o main && ~/projeto/main
 
 // ---------- FUNÇÕES PARA SIMULAÇÃO DE PAUSA ----------
 /* recomendação da internet parece ser usar funções diferentes no windows e linux.
@@ -26,50 +24,9 @@ void pausa(int milisegundos)
 */
 
 // PARA WINDOWS
-#include <windows.h>
+//#include <windows.h>
 
-void pausa(int milisegundos)
-{
-    Sleep(milisegundos);
-}
-
-// ---------- ESTRUTURAS ----------
-// Frame individual da mem física
-typedef struct
-{
-    int id;
-    bool ocupado;
-    bool alterado;   // indica se o conteúdo foi alterado desde que a página foi carregada no frame // ALAN: acho que precisa ser no frame, para saber se precisa copiar de volta pra mem virtual ou só apagar
-    int processo_id; // ID do processo que está usando o frame (-1 se livre)
-    int pagina_id;   // ID da página armazenada no frame (-1 se livre)
-    char *dados;     // ponteiro para os dados armazenados no frame
-} frame;
-
-// página individual da mem virtual
-typedef struct
-{
-    int id;
-    int processo_id; // aaaaacho que não precisa, pois só vamos usar dentro do espaço de endereçamento, que é dentro de um processo..
-    char *dados;
-} pagina;
-
-// linha indiviual da tebela de páginas
-typedef struct
-{
-    int end_pagina; // endereço / indice da pagina do espaço de endereçamento do processo
-    int end_frame;  // endereço / indice do frame na mem fisica
-} linhaTabelaDePaginas;
-
-// processo individual
-typedef struct
-{
-    int pid;
-    int *enderecos; // ainda não entendi o que é isso.......
-    int num_enderecos;
-    int tamanho_processo;
-    pagina *espacoEnderecamento;         //[NUM_PAGINAS_PROC]
-    linhaTabelaDePaginas *tabelaPaginas; //[NUM_PAGINAS_PROC]
-} processo;
+//void pausa(int milisegundos) {Sleep(milisegundos);}
 
 // ---------- INICIALIZAÇÕES ----------
 void inicializarMemoFisica(frame memoriaFisica[])
@@ -228,7 +185,7 @@ int traduzirEndereco(int endereco_virtual, processo *proc, frame memoriaFisica[]
     if (indice_frame == -1)
     {
         printf("LOG: Page fault: Página %d não está na memória física.\n", pagina_id); // TODO: alterar para fprintf ou similar
-        pausa(20);                                                                     // pausa para simulação do acesso ao disco
+        //pausa(20);                                                                     // pausa para simulação do acesso ao disco
         return -1;                                                                     // Indica page fault
     }
 
@@ -254,8 +211,10 @@ void liberarMemoriaFisica(frame memoriaFisica[])
     }
 }
 
-void main()
-{
+void main(){
+
+/* CAIO
+
 /*
 int tam_memoriaFisica = NUM_FRAMES*sizeof(frame);
 int tam_memoriaVirtual = NUM_PAGINAS*sizeof(pagina);
@@ -264,6 +223,10 @@ int tam_tabelaPaginas = NUM_PAGINAS*sizeof(linhaTabelaDePaginas);
 // pagina memoriaVirtual[NUM_PAGINAS]; // não vamos usar..
 
 // Configura o terminal do powershell para UTF-8 no Windows.. remover na entrega do projeto
+
+// Create six individual 'pagina' instances
+
+
 #ifdef _WIN32
     system("chcp 65001 > nul");
 #endif
