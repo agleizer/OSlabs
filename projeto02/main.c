@@ -213,7 +213,9 @@ void liberarMemoriaFisica(frame memoriaFisica[])
 
 void main(){
 
-/* CAIO
+
+
+
 
 /*
 int tam_memoriaFisica = NUM_FRAMES*sizeof(frame);

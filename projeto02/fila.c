@@ -12,13 +12,13 @@ Fila *criarFila(){
     filaCriada -> primeiro = 0;
     filaCriada -> ultimo = 0;
     filaCriada -> contagem = 0;
-    memset(filaCriada -> dados, 0, sizeof(pagina) * NUM_PAGINAS);  // Aloca memoria baseado no tipo de variavel, neste caso, pagina
+    memset(filaCriada -> dados, 0, sizeof(frame) * NUM_FRAMES);  // Aloca memoria baseado no tipo de variavel, neste caso, frame
     return filaCriada;
 }
 
 // Verifica se fila esta cheia
 bool estaCheio(Fila *fila) {
-    return fila->contagem == NUM_PAGINAS;  // Compara contagem com max
+    return fila->contagem == NUM_FRAMES;  // Compara contagem com max
 }
 
 // Verifica se fila esta vazia
@@ -26,22 +26,22 @@ bool estaVazio(Fila *fila) {
     return fila->contagem == 0;
 }
 
-void enqueue(Fila *fila, pagina novaPagina){
+void enqueue(Fila *fila, frame novoframe){
     if(!fila || estaCheio(fila)) return;  // Caso fila esteja cheia
 
     int indiceUltimo = fila->ultimo;
-    fila->dados[indiceUltimo] = novaPagina;  // Insere novo valor no final da fila
-    fila->ultimo = (indiceUltimo+1) % NUM_PAGINAS;  // Atualiza o indice do ultimo. "Da a volta" se necessario
+    fila->dados[indiceUltimo] = novoframe;  // Insere novo valor no final da fila
+    fila->ultimo = (indiceUltimo+1) % NUM_FRAMES;  // Atualiza o indice do ultimo. "Da a volta" se necessario
     ++fila->contagem;  // Incrementa contagem da fila
 }
 
-pagina dequeue(Fila *fila){
-    if (!fila || estaVazio(fila)) return (pagina){0, 0, NULL};  // Caso fila esteja vazia
+frame dequeue(Fila *fila){
+    if (!fila || estaVazio(fila)) return (frame){0, 0, NULL};  // Caso fila esteja vazia
 
-    pagina valor = fila->dados[fila->primeiro];  // Variavel para guardar a pagina de retorno
-    fila->primeiro = (fila->primeiro + 1) % NUM_PAGINAS;  // Atualiza o indice do primeiro. "Da a volta" se necessario
+    frame valor = fila->dados[fila->primeiro];  // Variavel para guardar a frame de retorno
+    fila->primeiro = (fila->primeiro + 1) % NUM_FRAMES;  // Atualiza o indice do primeiro. "Da a volta" se necessario
     --fila->contagem;  // Descrementa a contagem da fila
-    return valor;  // Retorna a pagina removida da fila
+    return valor;  // Retorna a frame removida da fila
 }
 
 
@@ -55,7 +55,13 @@ void imprimirFila(Fila *fila) {
     printf("Elementos na fila:\n");
     for (i = 0; i < fila->contagem; i++) {
         // Calculate the index of the current element
-        int indiceAtual = (fila->primeiro + i) % NUM_PAGINAS;
-        printf("ID: %d\n", fila->dados[indiceAtual].id);  // Print the id of the pagina
+        int indiceAtual = (fila->primeiro + i) % NUM_FRAMES;
+        printf("ID: %d\n", fila->dados[indiceAtual].id);  // Print the id of the frame
     }
+}
+
+// Apesar de ter a estrutura de uma fila, sera possivel acessar elementos no meio dela para propositos deste projeto
+frame pegarDado(Fila *fila, int i){
+    int indice = (fila->primeiro + i) % NUM_FRAMES;
+    return fila->dados[indice];
 }
