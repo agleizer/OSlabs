@@ -7,7 +7,7 @@
 
 #define TAMANHO_FRAME 4096
 #define TAMANHO_PAGINA 4096
-#define NUM_FRAMES 3
+#define NUM_FRAMES 5
 #define NUM_PAGINAS 25     // isso seria a mem virtual, que provavelmente não vamos implementar
 #define NUM_PAGINAS_PROC 5 // por processo
 
@@ -47,7 +47,8 @@ typedef struct
     linhaTabelaDePaginas *tabelaPaginas; //[NUM_PAGINAS_PROC]
 } processo;
 
-typedef struct queue {
+typedef struct queue
+{
     int primeiro;
     int ultimo;
     int contagem;
