@@ -1,3 +1,6 @@
+#ifndef ESTRUTURAS_H
+#define ESTRUTURAS_H
+
 // ---------- ESTRUTURAS ----------
 // Frame individual da mem física
 #include <stdlib.h>
@@ -9,7 +12,7 @@
 #define TAMANHO_PAGINA 4096
 #define NUM_FRAMES 5
 #define NUM_PAGINAS 25     // isso seria a mem virtual, que provavelmente não vamos implementar
-#define NUM_PAGINAS_PROC 5 // por processo
+#define NUM_PAGINAS_PROC 8 // por processo
 #define QTD_PROCESSOS 5
 
 typedef struct
@@ -48,10 +51,4 @@ typedef struct
     linhaTabelaDePaginas *tabelaPaginas; //[NUM_PAGINAS_PROC]
 } processo;
 
-typedef struct queue
-{
-    int primeiro;
-    int ultimo;
-    int contagem;
-    frame dados[NUM_FRAMES];
-} Fila;
+#endif

@@ -1,7 +1,10 @@
 {
-    "files.associations": {
-        "unistd.h": "c",
-        "stdlib.h": "c",
-        "types.h": "c"
-    }
+	"files.associations": {
+		"unistd.h": "c",
+		"stdlib.h": "c",
+		"types.h": "c",
+		"time.h": "c",
+		"stdio.h": "c",
+		"estruturasmemoria.h": "c"
+	}
 }
