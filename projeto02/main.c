@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include <time.h> // para rand
+#include <time.h>   // para rand
+#include <unistd.h> // para elitura de argc e argv
+#include <locale.h>
 #include "estruturasMemoria.h"
 #include "inicializacoes.h"
 #include "utils.h"
@@ -15,28 +17,198 @@ TODO PARA RODAR NO LINUX
 
 */
 
-int main()
+int main(int argc, char *argv[])
 {
-// Configura o terminal do powershell para UTF-8 no Windows.. remover na entrega do projeto
+    setlocale(LC_ALL, "pt_BR.UTF-8");
+    // Configura o terminal do powershell para UTF-8 no Windows.. remover na entrega do projeto
+
 #ifdef _WIN32
     system("chcp 65001 > nul");
 #endif
 
-    // definição das constantes de tamanho para as estruturas
-    // são valores padrão que serão sobrescritos pelo arquivo de configuração
-    // mantive nome em CAPS pois eram #defines e não quero reescreveer tudo
+    // -- CONSTANTES DO PROGRAMA
+    // valores padrão que serão sobrescritos pelo arquivo de configuração ou pela entrada manual
     int TAMANHO_FRAME = 4096;
     int TAMANHO_PAGINA = 4096;
     int NUM_FRAMES = 5;
     int NUM_PAGINAS = 25;     // isso seria a mem virtual, que provavelmente não vamos implementar
     int NUM_PAGINAS_PROC = 8; // por processo
     int QTD_PROCESSOS = 5;
+    int QTD_ACESSOS = 100;
     int DELAY_MEM_SEC = 10; // delay para acesso a memoria secundaria
-    char NOME_LOG[50] = "logSimulador.txt";
+    char NOME_LOG[50] = "logSimuladorPadrao.txt";
     char NOME_CONFIG[50] = "config.txt";
 
-    // procura por arquivo de config
-    bool arquivoConfigEncontrado = carregarConfig(NOME_CONFIG, &TAMANHO_FRAME, &TAMANHO_PAGINA, &NUM_FRAMES, &NUM_PAGINAS, &NUM_PAGINAS_PROC, &QTD_PROCESSOS, &DELAY_MEM_SEC, NOME_LOG);
+    // estatísticas interessantes
+    int totalPageFaults = 0;
+    int totalPageHits = 0;
+
+    // LEITURA DE ARGC E ARGV
+    int opt;
+    // char *configFile = NULL;
+    bool opcaoA = false;
+    bool opcaoM = false;
+
+    if (argc == 1)
+    {
+        // se programa foi rodado sem nenhum argumento
+        printf("Você não informou argumentos para a execução do programa.\n");
+        printf("O simulador será carregado com os valores padrão de configuração.\n");
+        printf("Execute o programa com -help para ver as opções.\n");
+    }
+
+    while ((opt = getopt(argc, argv, "a:mhelp")) != -1)
+    {
+        switch (opt)
+        {
+        case 'a':
+            opcaoA = true;
+            if (optarg == NULL)
+            {
+                printf("AVISO: Você selecionou opção para ler arquivo de configuração, mas não informou o nome de um arquivo.\n");
+                printf("AVISO: O arquivo padrão \"config.txt\" será utilizado.\n");
+                printf("Execute o programa com -help para ver as opções.\n");
+            }
+            else
+            {
+                strncpy(NOME_CONFIG, optarg, sizeof(NOME_CONFIG) - 1);
+                NOME_CONFIG[sizeof(NOME_CONFIG) - 1] = '\0'; // null twerminator
+                printf("Opção -a selecionada com arquivo de configuração: %s\n", NOME_CONFIG);
+            }
+            break;
+        case 'm':
+            if (opcaoA)
+            {
+                printf("Você não pode selecionar leitura de arquivo e leitura manual ao mesmo tempo.\n");
+                printf("Execute o programa com -help para ver as opções.\n");
+                printf("Terminando execução.\n");
+                return 1;
+            }
+            opcaoM = true;
+            printf("Você selecionou leitura manual dos valores.\n");
+            break;
+        case 'h': // help e variacoes
+        case '?':
+            imprimirHelp();
+            return 0;
+        default:
+            imprimirHelp();
+            return 1;
+        }
+    }
+
+    if (optind < argc)
+    {
+        printf("Erro: Argumento desconhecido \"%s\".\n", argv[optind]);
+        printf("Use -help para ver as opções válidas.\n");
+        return 1;
+    }
+
+    if (opcaoA)
+    {
+        // procura por arquivo de config
+        bool arquivoConfigEncontrado = carregarConfig(NOME_CONFIG, &TAMANHO_FRAME, &TAMANHO_PAGINA, &NUM_FRAMES, &NUM_PAGINAS, &NUM_PAGINAS_PROC, &QTD_PROCESSOS, &QTD_ACESSOS, &DELAY_MEM_SEC, NOME_LOG);
+        if (!arquivoConfigEncontrado)
+        {
+            printf("Erro na leitura do arquivo de configuração.\nVerifique o nome e a estrutura do arquivo.\n");
+            return 1;
+        }
+    }
+
+    if (opcaoM)
+    {
+        // Input e validação de TAMANHO_FRAME
+        do
+        {
+            printf("Informe a o tamanho do frame e da página (em bytes, >0): ");
+            scanf("%d", &TAMANHO_FRAME);
+            if (TAMANHO_FRAME <= 0)
+            {
+                printf("Valor inválido. Tente novamente.\n");
+            }
+        } while (TAMANHO_FRAME <= 0);
+
+        TAMANHO_PAGINA = TAMANHO_FRAME; // precisam ser iguais!
+
+        // Input e validação de NUM_FRAMES
+        do
+        {
+            printf("Informe a quantidade de frames na memória principal (>0): ");
+            scanf("%d", &NUM_FRAMES);
+            if (NUM_FRAMES <= 0)
+            {
+                printf("Valor inválido. Tente novamente.\n");
+            }
+        } while (NUM_FRAMES <= 0);
+
+        /*
+        // Input e validação de NUM_PAGINAS
+        do
+        {
+            printf("Informe a quantidade de páginas na memória virtual (>0): ");
+            scanf("%d", &NUM_PAGINAS);
+            if (NUM_PAGINAS <= 0)
+            {
+                printf("Valor inválido. Tente novamente.\n");
+            }
+        } while (NUM_PAGINAS <= 0);
+        */
+
+        // Input e validação de NUM_PAGINAS_PROC
+        do
+        {
+            printf("Informe a quantidade de páginas no espaço de endereçamento dos processos (>0): ");
+            scanf("%d", &NUM_PAGINAS_PROC);
+            if (NUM_PAGINAS_PROC <= 0)
+            {
+                printf("Valor inválido. Tente novamente.\n");
+            }
+        } while (NUM_PAGINAS_PROC <= 0);
+
+        // Input e validação de QTD_PROCESSOS
+        do
+        {
+            printf("Informe a quantidade de processos (>0): ");
+            scanf("%d", &QTD_PROCESSOS);
+            if (QTD_PROCESSOS <= 0)
+            {
+                printf("Valor inválido. Tente novamente.\n");
+            }
+        } while (QTD_PROCESSOS <= 0);
+
+        // Input e validação de QTD_ACESSOS
+        do
+        {
+            printf("Informe a quantidade de acessos (>0): ");
+            scanf("%d", &QTD_ACESSOS);
+            if (QTD_ACESSOS <= 0)
+            {
+                printf("Valor inválido. Tente novamente.\n");
+            }
+        } while (QTD_ACESSOS <= 0);
+
+        // Input e validação de DELAY_MEM_SEC
+        do
+        {
+            printf("Informe o tempo de acesso à memória secundária (em ns, >0): ");
+            scanf("%d", &DELAY_MEM_SEC);
+            if (DELAY_MEM_SEC <= 0)
+            {
+                printf("Valor inválido. Tente novamente.\n");
+            }
+        } while (DELAY_MEM_SEC <= 0);
+
+        // Input e validação de NOME_LOG
+        do
+        {
+            printf("Informe o nome do arquivo de log (string .txt): ");
+            scanf("%s", NOME_LOG);
+            if (strlen(NOME_LOG) == 0)
+            {
+                printf("Nome de arquivo inválido. Tente novamente.\n");
+            }
+        } while (strlen(NOME_LOG) == 0);
+    }
 
     // abertura do LOG
     FILE *arquivoLog = fopen(NOME_LOG, "w"); // arquivo sera criado se não existir, e SOBREESCRITO se existir
@@ -46,6 +218,7 @@ int main()
         return 1;
     }
 
+    /*
     fprintf(arquivoLog, ">> INICIANDO SIMULADOR <<\n\n");
     if (!arquivoConfigEncontrado)
     {
@@ -56,13 +229,27 @@ int main()
     {
         fprintf(arquivoLog, "Arquivo de configuração encontrado!\nUtilizando valores definidos:\n");
     }
+    */
 
+    printf("\nCarregamento bem-sucedido.\nValores definidos:\n");
+    printf("TAMANHO_FRAME = %d\n", TAMANHO_FRAME);
+    printf("TAMANHO_PAGINA = %d\n", TAMANHO_PAGINA);
+    printf("NUM_FRAMES = %d\n", NUM_FRAMES);
+    printf("NUM_PAGINAS = %d\n", NUM_PAGINAS);
+    printf("NUM_PAGINAS_PROC = %d\n", NUM_PAGINAS_PROC);
+    printf("QTD_PROCESSOS = %d\n", QTD_PROCESSOS);
+    printf("QTD_ACESSOS = %d\n", QTD_ACESSOS);
+    printf("DELAY_MEM_SEC = %d\n", DELAY_MEM_SEC);
+    printf("NOME_LOG = %s\n", NOME_LOG);
+
+    fprintf(arquivoLog, ">>INICIANDO SIMULADOR<<\n");
     fprintf(arquivoLog, "TAMANHO_FRAME: %d\n", TAMANHO_FRAME);
     fprintf(arquivoLog, "TAMANHO_PAGINA: %d\n", TAMANHO_PAGINA);
     fprintf(arquivoLog, "NUM_FRAMES: %d\n", NUM_FRAMES);
     fprintf(arquivoLog, "NUM_PAGINAS: %d\n", NUM_PAGINAS);
     fprintf(arquivoLog, "NUM_PAGINAS_PROC: %d\n", NUM_PAGINAS_PROC);
     fprintf(arquivoLog, "QTD_PROCESSOS: %d\n", QTD_PROCESSOS);
+    fprintf(arquivoLog, "QTD_ACESSOS: %d\n", QTD_ACESSOS);
     fprintf(arquivoLog, "DELAY_MEM_SEC: %d\n", DELAY_MEM_SEC);
     fprintf(arquivoLog, "NOME_LOG: %s\n\n", NOME_LOG);
 
@@ -99,7 +286,7 @@ int main()
 
     // simulação dos processos tentando acessar os endereços
     fprintf(arquivoLog, "\n\n>> INICIANDO ACESSOS <<\n");
-    for (int i = 0; i < QTD_PROCESSOS * NUM_PAGINAS_PROC * 2; i++) // 2 é um número mágico só para o simulador rodar por mais tempo.. talvez seja legal deixa-lo configurável, mas o loop fica muuito grande muito rápido
+    for (int i = 0; i < QTD_ACESSOS; i++)
     {
         fprintf(arquivoLog, "T = %d\n", relogio++);
         int procAtual = gerarNumeroAleatorio(QTD_PROCESSOS);
@@ -115,12 +302,14 @@ int main()
         if (frameAtual != -1)
         {
             // se está na memoria, basta acessar
+            totalPageHits++;
             fprintf(arquivoLog, "HIT: página %d do processo PID=%d já está na memória, no frame %d.\n", paginaAtual, processos[procAtual].pid, frameAtual);
             fprintf(arquivoLog, "  Acesso realizado. Dados do frame: %s\n", memoriaFisica[frameAtual].dados);
         }
         else
         {
             // se não está, precisamos alocar...
+            totalPageFaults++;
             fprintf(arquivoLog, "PAGE FAULT: página %d do processo PID=%d NÃO está na memória.\n", paginaAtual, processos[procAtual].pid);
             pausa(DELAY_MEM_SEC); // pausa para simular acesso a memoria secundaria
             fprintf(arquivoLog, "O acesso à memória secundária levou %d ns\n", DELAY_MEM_SEC);
@@ -155,38 +344,26 @@ int main()
         fprintf(arquivoLog, "\n\n");
     }
 
-    // -----------------------------------------------------------------------------------------
-
-    /*
-
-    for (int i = 0; i < QTD_PROCESSOS*5)
-    fprintf(arquivoLog, "Alocando frames para as páginas do processo 1...\n");
-    for (int i = 0; i < NUM_PAGINAS_PROC; i++)
+    fprintf(arquivoLog, ">> ESTATÍSTICAS <<\n");
+    fprintf(arquivoLog, "Total de acessos: %d\n", QTD_ACESSOS);
+    fprintf(arquivoLog, "Total de page hits: %d\n", totalPageHits);
+    fprintf(arquivoLog, "Total de page faults: %d\n", totalPageFaults);
+    if (QTD_ACESSOS != totalPageFaults + totalPageHits)
     {
-        alocarFrame(memoriaFisica, &proc1, i);
+        fprintf(arquivoLog, "ATENÇÃO: alguns acessos não foram contabilizados.\n", totalPageFaults);
     }
+    fprintf(arquivoLog, "Tempo total gasto acessando a memória secundária: %d ns\n", totalPageFaults * DELAY_MEM_SEC);
 
-    printf("\nTraduzindo endereços virtuais do processo 1...\n");
-    for (int i = 0; i < NUM_PAGINAS_PROC; i++)
+    // LIBERAÇÃO DA MEMÓRIA
+    fclose(arquivoLog);
+    for (int i = 0; i < QTD_PROCESSOS; i++)
     {
-        int endereco_fisico = traduzirEndereco(i, &proc1, memoriaFisica);
-        if (endereco_fisico != -1)
-        {
-            printf("Endereço virtual %d mapeado para endereço físico %d\n", i, endereco_fisico);
-        }
+        liberarMemoriaProcesso(&processos[i], NUM_PAGINAS_PROC);
+        free(&processos[i]);
     }
-
-    // Desalocação para verificação adicional
-    printf("\nDesalocando frames do processo 1...\n");
-    for (int i = 0; i < NUM_PAGINAS_PROC; i++)
-    {
-        desalocarFrame(memoriaFisica, &proc1, i);
-    }
-
-    // Liberar memória alocada
-    liberarMemoriaProcesso(&proc1);
-    liberarMemoriaFisica(memoriaFisica);
-    */
+    free(processos);
+    liberarMemoriaFisica(memoriaFisica, NUM_FRAMES);
+    free(memoriaFisica);
 
     return 0;
 }
