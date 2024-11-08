@@ -352,6 +352,10 @@ int main(int argc, char *argv[])
     {
         fprintf(arquivoLog, "ATENÇÃO: alguns acessos não foram contabilizados.\n", totalPageFaults);
     }
+    fprintf(arquivoLog, "\n");
+    fprintf(arquivoLog, "%% de page hits: %.2f%%\n", (float)totalPageHits / QTD_ACESSOS * 100);
+    fprintf(arquivoLog, "%% de page faults: %.2f%%\n", (float)totalPageFaults / QTD_ACESSOS * 100);
+    fprintf(arquivoLog, "\n");
     fprintf(arquivoLog, "Tempo total gasto acessando a memória secundária: %d ns\n", totalPageFaults * DELAY_MEM_SEC);
 
     // LIBERAÇÃO DA MEMÓRIA
