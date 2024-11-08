@@ -10,8 +10,19 @@ int gerarNumeroAleatorio(int max)
     return rand() % max;
 }
 
+void imprimirHelp()
+{
+    printf("Uso: ./simuladorOS.exe [opção]\n");
+    printf("Opções (selecione uma):\n");
+    printf("  -a <config.txt>  Especificar um arquivo de configuração.\n");
+    printf("                      mais infos no arquivo config.txt\n");
+    printf("  -m               Entrada manual dos parâmetros.\n");
+    printf("  -help            Mostrar essa mensagem de ajuda\n");
+    printf("  <vazio>          Uso dos valores padrão.\n");
+}
+
 bool carregarConfig(char *NOME_CONFIG, int *TAMANHO_FRAME, int *TAMANHO_PAGINA, int *NUM_FRAMES,
-                    int *NUM_PAGINAS, int *NUM_PAGINAS_PROC, int *QTD_PROCESSOS,
+                    int *NUM_PAGINAS, int *NUM_PAGINAS_PROC, int *QTD_PROCESSOS, int *QTD_ACESSOS,
                     int *DELAY_MEM_SEC, char *NOME_LOG)
 {
     FILE *file = fopen(NOME_CONFIG, "r");
@@ -72,6 +83,11 @@ bool carregarConfig(char *NOME_CONFIG, int *TAMANHO_FRAME, int *TAMANHO_PAGINA, 
         {
             *QTD_PROCESSOS = value;
             // printf("Alterando QTD_PROCESSOS para %d\n", *QTD_PROCESSOS);
+        }
+        else if (strcmp(key, "QTD_ACESSOS") == 0)
+        {
+            *QTD_ACESSOS = value;
+            // printf("Alterando QTD_ACESSOS para %d\n", *QTD_ACESSOS);
         }
         else if (strcmp(key, "DELAY_MEM_SEC") == 0)
         {

@@ -1,0 +1,2591 @@
+>>INICIANDO SIMULADOR<<
+TAMANHO_FRAME: 4096
+TAMANHO_PAGINA: 4096
+NUM_FRAMES: 5
+NUM_PAGINAS: 25
+NUM_PAGINAS_PROC: 8
+QTD_PROCESSOS: 5
+QTD_ACESSOS: 100
+DELAY_MEM_SEC: 10
+NOME_LOG: logSimuladorPadrao.txt
+
+>> INICIANDO SIMULAÇÃO <<
+
+T = 0
+Inicializando estruturas...
+Memória física inicializada!
+Processo PID=0 inicializado!
+Processo PID=1 inicializado!
+Processo PID=2 inicializado!
+Processo PID=3 inicializado!
+Processo PID=4 inicializado!
+
+Processos inicializados: 
+Lista de Processos:
+Processo 0:
+  Tamanho do Processo: 32768
+  Numero de Enderecos: 8
+  Enderecos: 10762 207 3623 8727 8076 29650 26558 30129 
+Processo 1:
+  Tamanho do Processo: 32768
+  Numero de Enderecos: 8
+  Enderecos: 6888 22914 166 22871 16412 26546 4591 21034 
+Processo 2:
+  Tamanho do Processo: 32768
+  Numero de Enderecos: 8
+  Enderecos: 11990 29225 18396 9396 32138 18781 13716 18891 
+Processo 3:
+  Tamanho do Processo: 32768
+  Numero de Enderecos: 8
+  Enderecos: 27329 30334 12571 10936 14516 30902 11137 26777 
+Processo 4:
+  Tamanho do Processo: 32768
+  Numero de Enderecos: 8
+  Enderecos: 26393 26544 22873 13060 16189 8023 16237 29165 
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| Livre |
+--------
+| Livre |
+--------
+| Livre |
+--------
+| Livre |
+--------
+| Livre |
+--------
+
+
+>> INICIANDO ACESSOS <<
+T = 1
+Processo atual = 0
+Endereço que será acessado: = 10762
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 2 do processo PID=0 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| Livre |
+--------
+| Livre |
+--------
+| Livre |
+--------
+| Livre |
+--------
+
+
+T = 2
+Processo atual = 0
+Endereço que será acessado: = 3623
+Página do processo que contém o endereço = 0
+PAGE FAULT: página 0 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 0 do processo PID=0 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P0-0 |
+--------
+| Livre |
+--------
+| Livre |
+--------
+| Livre |
+--------
+
+
+T = 3
+Processo atual = 2
+Endereço que será acessado: = 18396
+Página do processo que contém o endereço = 4
+PAGE FAULT: página 4 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 4 do processo PID=2 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P0-0 |
+--------
+| P2-4 |
+--------
+| Livre |
+--------
+| Livre |
+--------
+
+
+T = 4
+Processo atual = 2
+Endereço que será acessado: = 32138
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 7 do processo PID=2 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P0-0 |
+--------
+| P2-4 |
+--------
+| P2-7 |
+--------
+| Livre |
+--------
+
+
+T = 5
+Processo atual = 1
+Endereço que será acessado: = 16412
+Página do processo que contém o endereço = 4
+PAGE FAULT: página 4 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 4 do processo PID=1 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P0-0 |
+--------
+| P2-4 |
+--------
+| P2-7 |
+--------
+| P1-4 |
+--------
+
+
+T = 6
+Processo atual = 1
+Endereço que será acessado: = 22914
+Página do processo que contém o endereço = 5
+PAGE FAULT: página 5 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 0, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 5 do processo PID=1 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P0-0 |
+--------
+| P2-4 |
+--------
+| P2-7 |
+--------
+| P1-4 |
+--------
+
+
+T = 7
+Processo atual = 3
+Endereço que será acessado: = 27329
+Página do processo que contém o endereço = 6
+PAGE FAULT: página 6 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 1, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 6 do processo PID=3 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P3-6 |
+--------
+| P2-4 |
+--------
+| P2-7 |
+--------
+| P1-4 |
+--------
+
+
+T = 8
+Processo atual = 0
+Endereço que será acessado: = 10762
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 2, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 2 do processo PID=0 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P3-6 |
+--------
+| P0-2 |
+--------
+| P2-7 |
+--------
+| P1-4 |
+--------
+
+
+T = 9
+Processo atual = 2
+Endereço que será acessado: = 11990
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 3, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 2 do processo PID=2 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P3-6 |
+--------
+| P0-2 |
+--------
+| P2-2 |
+--------
+| P1-4 |
+--------
+
+
+T = 10
+Processo atual = 0
+Endereço que será acessado: = 8076
+Página do processo que contém o endereço = 1
+PAGE FAULT: página 1 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 4, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 1 do processo PID=0 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P3-6 |
+--------
+| P0-2 |
+--------
+| P2-2 |
+--------
+| P0-1 |
+--------
+
+
+T = 11
+Processo atual = 0
+Endereço que será acessado: = 26558
+Página do processo que contém o endereço = 6
+PAGE FAULT: página 6 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 5, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 6 do processo PID=0 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-6 |
+--------
+| P3-6 |
+--------
+| P0-2 |
+--------
+| P2-2 |
+--------
+| P0-1 |
+--------
+
+
+T = 12
+Processo atual = 3
+Endereço que será acessado: = 30902
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 6, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 7 do processo PID=3 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-6 |
+--------
+| P3-7 |
+--------
+| P0-2 |
+--------
+| P2-2 |
+--------
+| P0-1 |
+--------
+
+
+T = 13
+Processo atual = 3
+Endereço que será acessado: = 27329
+Página do processo que contém o endereço = 6
+PAGE FAULT: página 6 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 7, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 6 do processo PID=3 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-6 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+| P2-2 |
+--------
+| P0-1 |
+--------
+
+
+T = 14
+Processo atual = 3
+Endereço que será acessado: = 10936
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 8, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 2 do processo PID=3 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-6 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+| P3-2 |
+--------
+| P0-1 |
+--------
+
+
+T = 15
+Processo atual = 0
+Endereço que será acessado: = 8727
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 9, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 2 do processo PID=0 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-6 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+| P3-2 |
+--------
+| P0-2 |
+--------
+
+
+T = 16
+Processo atual = 3
+Endereço que será acessado: = 30902
+Página do processo que contém o endereço = 7
+HIT: página 7 do processo PID=3 já está na memória, no frame 1.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-6 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+| P3-2 |
+--------
+| P0-2 |
+--------
+
+
+T = 17
+Processo atual = 3
+Endereço que será acessado: = 26777
+Página do processo que contém o endereço = 6
+HIT: página 6 do processo PID=3 já está na memória, no frame 2.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-6 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+| P3-2 |
+--------
+| P0-2 |
+--------
+
+
+T = 18
+Processo atual = 1
+Endereço que será acessado: = 22914
+Página do processo que contém o endereço = 5
+PAGE FAULT: página 5 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 10, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 5 do processo PID=1 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+| P3-2 |
+--------
+| P0-2 |
+--------
+
+
+T = 19
+Processo atual = 4
+Endereço que será acessado: = 16189
+Página do processo que contém o endereço = 3
+PAGE FAULT: página 3 do processo PID=4 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 11, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 3 do processo PID=4 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-3 |
+--------
+| P3-6 |
+--------
+| P3-2 |
+--------
+| P0-2 |
+--------
+
+
+T = 20
+Processo atual = 4
+Endereço que será acessado: = 16189
+Página do processo que contém o endereço = 3
+HIT: página 3 do processo PID=4 já está na memória, no frame 1.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-3 |
+--------
+| P3-6 |
+--------
+| P3-2 |
+--------
+| P0-2 |
+--------
+
+
+T = 21
+Processo atual = 4
+Endereço que será acessado: = 13060
+Página do processo que contém o endereço = 3
+HIT: página 3 do processo PID=4 já está na memória, no frame 1.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-3 |
+--------
+| P3-6 |
+--------
+| P3-2 |
+--------
+| P0-2 |
+--------
+
+
+T = 22
+Processo atual = 1
+Endereço que será acessado: = 16412
+Página do processo que contém o endereço = 4
+PAGE FAULT: página 4 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 12, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 4 do processo PID=1 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-3 |
+--------
+| P1-4 |
+--------
+| P3-2 |
+--------
+| P0-2 |
+--------
+
+
+T = 23
+Processo atual = 2
+Endereço que será acessado: = 11990
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 13, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 2 do processo PID=2 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-3 |
+--------
+| P1-4 |
+--------
+| P2-2 |
+--------
+| P0-2 |
+--------
+
+
+T = 24
+Processo atual = 1
+Endereço que será acessado: = 16412
+Página do processo que contém o endereço = 4
+HIT: página 4 do processo PID=1 já está na memória, no frame 2.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-3 |
+--------
+| P1-4 |
+--------
+| P2-2 |
+--------
+| P0-2 |
+--------
+
+
+T = 25
+Processo atual = 2
+Endereço que será acessado: = 18891
+Página do processo que contém o endereço = 4
+PAGE FAULT: página 4 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 14, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 4 do processo PID=2 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-3 |
+--------
+| P1-4 |
+--------
+| P2-2 |
+--------
+| P2-4 |
+--------
+
+
+T = 26
+Processo atual = 0
+Endereço que será acessado: = 10762
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 17, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 2 do processo PID=0 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P4-3 |
+--------
+| P1-4 |
+--------
+| P2-2 |
+--------
+| P2-4 |
+--------
+
+
+T = 27
+Processo atual = 1
+Endereço que será acessado: = 16412
+Página do processo que contém o endereço = 4
+HIT: página 4 do processo PID=1 já está na memória, no frame 2.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P4-3 |
+--------
+| P1-4 |
+--------
+| P2-2 |
+--------
+| P2-4 |
+--------
+
+
+T = 28
+Processo atual = 3
+Endereço que será acessado: = 12571
+Página do processo que contém o endereço = 3
+PAGE FAULT: página 3 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 18, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 3 do processo PID=3 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P3-3 |
+--------
+| P1-4 |
+--------
+| P2-2 |
+--------
+| P2-4 |
+--------
+
+
+T = 29
+Processo atual = 2
+Endereço que será acessado: = 18891
+Página do processo que contém o endereço = 4
+HIT: página 4 do processo PID=2 já está na memória, no frame 4.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P3-3 |
+--------
+| P1-4 |
+--------
+| P2-2 |
+--------
+| P2-4 |
+--------
+
+
+T = 30
+Processo atual = 0
+Endereço que será acessado: = 8076
+Página do processo que contém o endereço = 1
+PAGE FAULT: página 1 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 21, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 1 do processo PID=0 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P3-3 |
+--------
+| P0-1 |
+--------
+| P2-2 |
+--------
+| P2-4 |
+--------
+
+
+T = 31
+Processo atual = 3
+Endereço que será acessado: = 27329
+Página do processo que contém o endereço = 6
+PAGE FAULT: página 6 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 22, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 6 do processo PID=3 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P3-3 |
+--------
+| P0-1 |
+--------
+| P3-6 |
+--------
+| P2-4 |
+--------
+
+
+T = 32
+Processo atual = 4
+Endereço que será acessado: = 29165
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=4 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 24, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 7 do processo PID=4 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P3-3 |
+--------
+| P0-1 |
+--------
+| P3-6 |
+--------
+| P4-7 |
+--------
+
+
+T = 33
+Processo atual = 3
+Endereço que será acessado: = 27329
+Página do processo que contém o endereço = 6
+HIT: página 6 do processo PID=3 já está na memória, no frame 3.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P3-3 |
+--------
+| P0-1 |
+--------
+| P3-6 |
+--------
+| P4-7 |
+--------
+
+
+T = 34
+Processo atual = 0
+Endereço que será acessado: = 8727
+Página do processo que contém o endereço = 2
+HIT: página 2 do processo PID=0 já está na memória, no frame 0.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P0-2 |
+--------
+| P3-3 |
+--------
+| P0-1 |
+--------
+| P3-6 |
+--------
+| P4-7 |
+--------
+
+
+T = 35
+Processo atual = 1
+Endereço que será acessado: = 6888
+Página do processo que contém o endereço = 1
+PAGE FAULT: página 1 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 25, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 1 do processo PID=1 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-1 |
+--------
+| P3-3 |
+--------
+| P0-1 |
+--------
+| P3-6 |
+--------
+| P4-7 |
+--------
+
+
+T = 36
+Processo atual = 2
+Endereço que será acessado: = 11990
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 27, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 2 do processo PID=2 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-1 |
+--------
+| P2-2 |
+--------
+| P0-1 |
+--------
+| P3-6 |
+--------
+| P4-7 |
+--------
+
+
+T = 37
+Processo atual = 3
+Endereço que será acessado: = 30902
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 29, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 7 do processo PID=3 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-1 |
+--------
+| P2-2 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+| P4-7 |
+--------
+
+
+T = 38
+Processo atual = 3
+Endereço que será acessado: = 30902
+Página do processo que contém o endereço = 7
+HIT: página 7 do processo PID=3 já está na memória, no frame 2.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-1 |
+--------
+| P2-2 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+| P4-7 |
+--------
+
+
+T = 39
+Processo atual = 0
+Endereço que será acessado: = 29650
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 30, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 7 do processo PID=0 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-1 |
+--------
+| P2-2 |
+--------
+| P3-7 |
+--------
+| P0-7 |
+--------
+| P4-7 |
+--------
+
+
+T = 40
+Processo atual = 1
+Endereço que será acessado: = 4591
+Página do processo que contém o endereço = 1
+HIT: página 1 do processo PID=1 já está na memória, no frame 0.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-1 |
+--------
+| P2-2 |
+--------
+| P3-7 |
+--------
+| P0-7 |
+--------
+| P4-7 |
+--------
+
+
+T = 41
+Processo atual = 3
+Endereço que será acessado: = 10936
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 31, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 2 do processo PID=3 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-1 |
+--------
+| P2-2 |
+--------
+| P3-7 |
+--------
+| P0-7 |
+--------
+| P3-2 |
+--------
+
+
+T = 42
+Processo atual = 1
+Endereço que será acessado: = 22871
+Página do processo que contém o endereço = 5
+PAGE FAULT: página 5 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 34, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 5 do processo PID=1 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P2-2 |
+--------
+| P3-7 |
+--------
+| P0-7 |
+--------
+| P3-2 |
+--------
+
+
+T = 43
+Processo atual = 1
+Endereço que será acessado: = 22914
+Página do processo que contém o endereço = 5
+HIT: página 5 do processo PID=1 já está na memória, no frame 0.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P2-2 |
+--------
+| P3-7 |
+--------
+| P0-7 |
+--------
+| P3-2 |
+--------
+
+
+T = 44
+Processo atual = 4
+Endereço que será acessado: = 29165
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=4 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 35, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 7 do processo PID=4 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-7 |
+--------
+| P3-7 |
+--------
+| P0-7 |
+--------
+| P3-2 |
+--------
+
+
+T = 45
+Processo atual = 4
+Endereço que será acessado: = 16237
+Página do processo que contém o endereço = 3
+PAGE FAULT: página 3 do processo PID=4 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 36, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 3 do processo PID=4 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-7 |
+--------
+| P4-3 |
+--------
+| P0-7 |
+--------
+| P3-2 |
+--------
+
+
+T = 46
+Processo atual = 0
+Endereço que será acessado: = 30129
+Página do processo que contém o endereço = 7
+HIT: página 7 do processo PID=0 já está na memória, no frame 3.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-7 |
+--------
+| P4-3 |
+--------
+| P0-7 |
+--------
+| P3-2 |
+--------
+
+
+T = 47
+Processo atual = 2
+Endereço que será acessado: = 13716
+Página do processo que contém o endereço = 3
+PAGE FAULT: página 3 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 38, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 3 do processo PID=2 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-7 |
+--------
+| P4-3 |
+--------
+| P2-3 |
+--------
+| P3-2 |
+--------
+
+
+T = 48
+Processo atual = 2
+Endereço que será acessado: = 32138
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 40, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 7 do processo PID=2 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-5 |
+--------
+| P4-7 |
+--------
+| P4-3 |
+--------
+| P2-3 |
+--------
+| P2-7 |
+--------
+
+
+T = 49
+Processo atual = 4
+Endereço que será acessado: = 22873
+Página do processo que contém o endereço = 5
+PAGE FAULT: página 5 do processo PID=4 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 41, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 5 do processo PID=4 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-5 |
+--------
+| P4-7 |
+--------
+| P4-3 |
+--------
+| P2-3 |
+--------
+| P2-7 |
+--------
+
+
+T = 50
+Processo atual = 3
+Endereço que será acessado: = 12571
+Página do processo que contém o endereço = 3
+PAGE FAULT: página 3 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 43, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 3 do processo PID=3 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-5 |
+--------
+| P3-3 |
+--------
+| P4-3 |
+--------
+| P2-3 |
+--------
+| P2-7 |
+--------
+
+
+T = 51
+Processo atual = 3
+Endereço que será acessado: = 26777
+Página do processo que contém o endereço = 6
+PAGE FAULT: página 6 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 44, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 6 do processo PID=3 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-5 |
+--------
+| P3-3 |
+--------
+| P3-6 |
+--------
+| P2-3 |
+--------
+| P2-7 |
+--------
+
+
+T = 52
+Processo atual = 0
+Endereço que será acessado: = 207
+Página do processo que contém o endereço = 0
+PAGE FAULT: página 0 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 46, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 0 do processo PID=0 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-5 |
+--------
+| P3-3 |
+--------
+| P3-6 |
+--------
+| P0-0 |
+--------
+| P2-7 |
+--------
+
+
+T = 53
+Processo atual = 4
+Endereço que será acessado: = 13060
+Página do processo que contém o endereço = 3
+PAGE FAULT: página 3 do processo PID=4 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 47, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 3 do processo PID=4 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-5 |
+--------
+| P3-3 |
+--------
+| P3-6 |
+--------
+| P0-0 |
+--------
+| P4-3 |
+--------
+
+
+T = 54
+Processo atual = 3
+Endereço que será acessado: = 10936
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 48, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 2 do processo PID=3 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-2 |
+--------
+| P3-3 |
+--------
+| P3-6 |
+--------
+| P0-0 |
+--------
+| P4-3 |
+--------
+
+
+T = 55
+Processo atual = 3
+Endereço que será acessado: = 30902
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 49, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 7 do processo PID=3 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-2 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+| P0-0 |
+--------
+| P4-3 |
+--------
+
+
+T = 56
+Processo atual = 1
+Endereço que será acessado: = 6888
+Página do processo que contém o endereço = 1
+PAGE FAULT: página 1 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 50, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 1 do processo PID=1 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-2 |
+--------
+| P3-7 |
+--------
+| P1-1 |
+--------
+| P0-0 |
+--------
+| P4-3 |
+--------
+
+
+T = 57
+Processo atual = 1
+Endereço que será acessado: = 16412
+Página do processo que contém o endereço = 4
+PAGE FAULT: página 4 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 51, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 4 do processo PID=1 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-2 |
+--------
+| P3-7 |
+--------
+| P1-1 |
+--------
+| P1-4 |
+--------
+| P4-3 |
+--------
+
+
+T = 58
+Processo atual = 3
+Endereço que será acessado: = 26777
+Página do processo que contém o endereço = 6
+PAGE FAULT: página 6 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 52, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 6 do processo PID=3 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-2 |
+--------
+| P3-7 |
+--------
+| P1-1 |
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+
+
+T = 59
+Processo atual = 2
+Endereço que será acessado: = 32138
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 53, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 7 do processo PID=2 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P2-7 |
+--------
+| P3-7 |
+--------
+| P1-1 |
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+
+
+T = 60
+Processo atual = 0
+Endereço que será acessado: = 26558
+Página do processo que contém o endereço = 6
+PAGE FAULT: página 6 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 54, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 6 do processo PID=0 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P2-7 |
+--------
+| P0-6 |
+--------
+| P1-1 |
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+
+
+T = 61
+Processo atual = 2
+Endereço que será acessado: = 32138
+Página do processo que contém o endereço = 7
+HIT: página 7 do processo PID=2 já está na memória, no frame 0.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P2-7 |
+--------
+| P0-6 |
+--------
+| P1-1 |
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+
+
+T = 62
+Processo atual = 1
+Endereço que será acessado: = 22871
+Página do processo que contém o endereço = 5
+PAGE FAULT: página 5 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 55, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 5 do processo PID=1 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P2-7 |
+--------
+| P0-6 |
+--------
+| P1-5 |
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+
+
+T = 63
+Processo atual = 1
+Endereço que será acessado: = 22871
+Página do processo que contém o endereço = 5
+HIT: página 5 do processo PID=1 já está na memória, no frame 2.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P2-7 |
+--------
+| P0-6 |
+--------
+| P1-5 |
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+
+
+T = 64
+Processo atual = 0
+Endereço que será acessado: = 8076
+Página do processo que contém o endereço = 1
+PAGE FAULT: página 1 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 56, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 1 do processo PID=0 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P2-7 |
+--------
+| P0-6 |
+--------
+| P1-5 |
+--------
+| P0-1 |
+--------
+| P3-6 |
+--------
+
+
+T = 65
+Processo atual = 0
+Endereço que será acessado: = 29650
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 57, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 7 do processo PID=0 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P2-7 |
+--------
+| P0-6 |
+--------
+| P1-5 |
+--------
+| P0-1 |
+--------
+| P0-7 |
+--------
+
+
+T = 66
+Processo atual = 1
+Endereço que será acessado: = 16412
+Página do processo que contém o endereço = 4
+PAGE FAULT: página 4 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 58, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 4 do processo PID=1 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-4 |
+--------
+| P0-6 |
+--------
+| P1-5 |
+--------
+| P0-1 |
+--------
+| P0-7 |
+--------
+
+
+T = 67
+Processo atual = 3
+Endereço que será acessado: = 27329
+Página do processo que contém o endereço = 6
+PAGE FAULT: página 6 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 59, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 6 do processo PID=3 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+| P1-5 |
+--------
+| P0-1 |
+--------
+| P0-7 |
+--------
+
+
+T = 68
+Processo atual = 1
+Endereço que será acessado: = 21034
+Página do processo que contém o endereço = 5
+HIT: página 5 do processo PID=1 já está na memória, no frame 2.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+| P1-5 |
+--------
+| P0-1 |
+--------
+| P0-7 |
+--------
+
+
+T = 69
+Processo atual = 1
+Endereço que será acessado: = 16412
+Página do processo que contém o endereço = 4
+HIT: página 4 do processo PID=1 já está na memória, no frame 0.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+| P1-5 |
+--------
+| P0-1 |
+--------
+| P0-7 |
+--------
+
+
+T = 70
+Processo atual = 3
+Endereço que será acessado: = 27329
+Página do processo que contém o endereço = 6
+HIT: página 6 do processo PID=3 já está na memória, no frame 1.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+| P1-5 |
+--------
+| P0-1 |
+--------
+| P0-7 |
+--------
+
+
+T = 71
+Processo atual = 3
+Endereço que será acessado: = 12571
+Página do processo que contém o endereço = 3
+PAGE FAULT: página 3 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 61, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 3 do processo PID=3 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+| P3-3 |
+--------
+| P0-1 |
+--------
+| P0-7 |
+--------
+
+
+T = 72
+Processo atual = 2
+Endereço que será acessado: = 11990
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 63, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 2 do processo PID=2 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+| P3-3 |
+--------
+| P2-2 |
+--------
+| P0-7 |
+--------
+
+
+T = 73
+Processo atual = 1
+Endereço que será acessado: = 22871
+Página do processo que contém o endereço = 5
+PAGE FAULT: página 5 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 64, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 5 do processo PID=1 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P1-4 |
+--------
+| P3-6 |
+--------
+| P3-3 |
+--------
+| P2-2 |
+--------
+| P1-5 |
+--------
+
+
+T = 74
+Processo atual = 4
+Endereço que será acessado: = 22873
+Página do processo que contém o endereço = 5
+PAGE FAULT: página 5 do processo PID=4 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 65, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 5 do processo PID=4 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-5 |
+--------
+| P3-6 |
+--------
+| P3-3 |
+--------
+| P2-2 |
+--------
+| P1-5 |
+--------
+
+
+T = 75
+Processo atual = 4
+Endereço que será acessado: = 8023
+Página do processo que contém o endereço = 1
+PAGE FAULT: página 1 do processo PID=4 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 66, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 1 do processo PID=4 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-5 |
+--------
+| P4-1 |
+--------
+| P3-3 |
+--------
+| P2-2 |
+--------
+| P1-5 |
+--------
+
+
+T = 76
+Processo atual = 2
+Endereço que será acessado: = 18781
+Página do processo que contém o endereço = 4
+PAGE FAULT: página 4 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 70, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 4 do processo PID=2 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-5 |
+--------
+| P4-1 |
+--------
+| P2-4 |
+--------
+| P2-2 |
+--------
+| P1-5 |
+--------
+
+
+T = 77
+Processo atual = 3
+Endereço que será acessado: = 12571
+Página do processo que contém o endereço = 3
+PAGE FAULT: página 3 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 71, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 3 do processo PID=3 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-5 |
+--------
+| P4-1 |
+--------
+| P2-4 |
+--------
+| P3-3 |
+--------
+| P1-5 |
+--------
+
+
+T = 78
+Processo atual = 4
+Endereço que será acessado: = 22873
+Página do processo que contém o endereço = 5
+HIT: página 5 do processo PID=4 já está na memória, no frame 0.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-5 |
+--------
+| P4-1 |
+--------
+| P2-4 |
+--------
+| P3-3 |
+--------
+| P1-5 |
+--------
+
+
+T = 79
+Processo atual = 4
+Endereço que será acessado: = 26544
+Página do processo que contém o endereço = 6
+PAGE FAULT: página 6 do processo PID=4 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 72, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 6 do processo PID=4 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-5 |
+--------
+| P4-1 |
+--------
+| P2-4 |
+--------
+| P3-3 |
+--------
+| P4-6 |
+--------
+
+
+T = 80
+Processo atual = 3
+Endereço que será acessado: = 11137
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 73, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 2 do processo PID=3 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-2 |
+--------
+| P4-1 |
+--------
+| P2-4 |
+--------
+| P3-3 |
+--------
+| P4-6 |
+--------
+
+
+T = 81
+Processo atual = 2
+Endereço que será acessado: = 29225
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 74, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 7 do processo PID=2 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-2 |
+--------
+| P2-7 |
+--------
+| P2-4 |
+--------
+| P3-3 |
+--------
+| P4-6 |
+--------
+
+
+T = 82
+Processo atual = 4
+Endereço que será acessado: = 22873
+Página do processo que contém o endereço = 5
+PAGE FAULT: página 5 do processo PID=4 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 75, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 5 do processo PID=4 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-2 |
+--------
+| P2-7 |
+--------
+| P4-5 |
+--------
+| P3-3 |
+--------
+| P4-6 |
+--------
+
+
+T = 83
+Processo atual = 3
+Endereço que será acessado: = 10936
+Página do processo que contém o endereço = 2
+HIT: página 2 do processo PID=3 já está na memória, no frame 0.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-2 |
+--------
+| P2-7 |
+--------
+| P4-5 |
+--------
+| P3-3 |
+--------
+| P4-6 |
+--------
+
+
+T = 84
+Processo atual = 3
+Endereço que será acessado: = 30334
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 76, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 7 do processo PID=3 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-2 |
+--------
+| P2-7 |
+--------
+| P4-5 |
+--------
+| P3-7 |
+--------
+| P4-6 |
+--------
+
+
+T = 85
+Processo atual = 3
+Endereço que será acessado: = 27329
+Página do processo que contém o endereço = 6
+PAGE FAULT: página 6 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 78, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 6 do processo PID=3 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-2 |
+--------
+| P2-7 |
+--------
+| P4-5 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+
+
+T = 86
+Processo atual = 3
+Endereço que será acessado: = 12571
+Página do processo que contém o endereço = 3
+PAGE FAULT: página 3 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 79, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 3 do processo PID=3 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-3 |
+--------
+| P2-7 |
+--------
+| P4-5 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+
+
+T = 87
+Processo atual = 2
+Endereço que será acessado: = 9396
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 80, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 2 do processo PID=2 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-3 |
+--------
+| P2-2 |
+--------
+| P4-5 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+
+
+T = 88
+Processo atual = 0
+Endereço que será acessado: = 30129
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 81, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 7 do processo PID=0 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-3 |
+--------
+| P2-2 |
+--------
+| P0-7 |
+--------
+| P3-7 |
+--------
+| P3-6 |
+--------
+
+
+T = 89
+Processo atual = 0
+Endereço que será acessado: = 10762
+Página do processo que contém o endereço = 2
+PAGE FAULT: página 2 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 83, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 2 do processo PID=0 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-3 |
+--------
+| P2-2 |
+--------
+| P0-7 |
+--------
+| P0-2 |
+--------
+| P3-6 |
+--------
+
+
+T = 90
+Processo atual = 0
+Endereço que será acessado: = 29650
+Página do processo que contém o endereço = 7
+HIT: página 7 do processo PID=0 já está na memória, no frame 2.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-3 |
+--------
+| P2-2 |
+--------
+| P0-7 |
+--------
+| P0-2 |
+--------
+| P3-6 |
+--------
+
+
+T = 91
+Processo atual = 2
+Endereço que será acessado: = 32138
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 84, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 7 do processo PID=2 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P3-3 |
+--------
+| P2-2 |
+--------
+| P0-7 |
+--------
+| P0-2 |
+--------
+| P2-7 |
+--------
+
+
+T = 92
+Processo atual = 4
+Endereço que será acessado: = 8023
+Página do processo que contém o endereço = 1
+PAGE FAULT: página 1 do processo PID=4 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 85, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 1 do processo PID=4 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-1 |
+--------
+| P2-2 |
+--------
+| P0-7 |
+--------
+| P0-2 |
+--------
+| P2-7 |
+--------
+
+
+T = 93
+Processo atual = 3
+Endereço que será acessado: = 26777
+Página do processo que contém o endereço = 6
+PAGE FAULT: página 6 do processo PID=3 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 86, no índice 1.
+Processo de desalocação: frame no índice 1 foi liberado com sucesso.
+Frame livre encontrado no índice 1 da memória física.
+SUCESSO: A página 6 do processo PID=3 foi alocado no frame 1
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-1 |
+--------
+| P3-6 |
+--------
+| P0-7 |
+--------
+| P0-2 |
+--------
+| P2-7 |
+--------
+
+
+T = 94
+Processo atual = 1
+Endereço que será acessado: = 166
+Página do processo que contém o endereço = 0
+PAGE FAULT: página 0 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 87, no índice 2.
+Processo de desalocação: frame no índice 2 foi liberado com sucesso.
+Frame livre encontrado no índice 2 da memória física.
+SUCESSO: A página 0 do processo PID=1 foi alocado no frame 2
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-1 |
+--------
+| P3-6 |
+--------
+| P1-0 |
+--------
+| P0-2 |
+--------
+| P2-7 |
+--------
+
+
+T = 95
+Processo atual = 0
+Endereço que será acessado: = 10762
+Página do processo que contém o endereço = 2
+HIT: página 2 do processo PID=0 já está na memória, no frame 3.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-1 |
+--------
+| P3-6 |
+--------
+| P1-0 |
+--------
+| P0-2 |
+--------
+| P2-7 |
+--------
+
+
+T = 96
+Processo atual = 0
+Endereço que será acessado: = 8076
+Página do processo que contém o endereço = 1
+PAGE FAULT: página 1 do processo PID=0 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 88, no índice 3.
+Processo de desalocação: frame no índice 3 foi liberado com sucesso.
+Frame livre encontrado no índice 3 da memória física.
+SUCESSO: A página 1 do processo PID=0 foi alocado no frame 3
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-1 |
+--------
+| P3-6 |
+--------
+| P1-0 |
+--------
+| P0-1 |
+--------
+| P2-7 |
+--------
+
+
+T = 97
+Processo atual = 1
+Endereço que será acessado: = 21034
+Página do processo que contém o endereço = 5
+PAGE FAULT: página 5 do processo PID=1 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 90, no índice 4.
+Processo de desalocação: frame no índice 4 foi liberado com sucesso.
+Frame livre encontrado no índice 4 da memória física.
+SUCESSO: A página 5 do processo PID=1 foi alocado no frame 4
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P4-1 |
+--------
+| P3-6 |
+--------
+| P1-0 |
+--------
+| P0-1 |
+--------
+| P1-5 |
+--------
+
+
+T = 98
+Processo atual = 2
+Endereço que será acessado: = 32138
+Página do processo que contém o endereço = 7
+PAGE FAULT: página 7 do processo PID=2 NÃO está na memória.
+O acesso à memória secundária levou 10 ns
+Nenhum frame livre foi localizado! Selecionando frame para desalocar...
+O frame mais antigo na memória é o frameID: 91, no índice 0.
+Processo de desalocação: frame no índice 0 foi liberado com sucesso.
+Frame livre encontrado no índice 0 da memória física.
+SUCESSO: A página 7 do processo PID=2 foi alocado no frame 0
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames
+--------
+| P2-7 |
+--------
+| P3-6 |
+--------
+| P1-0 |
+--------
+| P0-1 |
+--------
+| P1-5 |
+--------
+
+
+T = 99
+Processo atual = 1
+Endereço que será acessado: = 22914
+Página do processo que contém o endereço = 5
+HIT: página 5 do processo PID=1 já está na memória, no frame 4.
+  Acesso realizado. Dados do frame: �
+
+Estado da Memoria Fisica:
+Imprimindo 5 frames

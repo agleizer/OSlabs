@@ -19,8 +19,11 @@ NUM_PAGINAS_PROC 35
 // quanttidade de processos que serão inicializados
 QTD_PROCESSOS 10
 
+// quanttidade de acessos que serão realizados no total pelos processos
+QTD_ACESSOS 100
+
 // delay (em nanosegudos) para o acesso à memória
 DELAY_MEM_SEC 10
 
 // nome do arquivo de log para exportação
-NOME_LOG logSimulador.txt
+NOME_LOG logSimuladorConfig.txt
