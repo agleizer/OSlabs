@@ -8,15 +8,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-/* // não podem mais ser defines pois precisam ser alterados.....
-#define TAMANHO_FRAME 4096
-#define TAMANHO_PAGINA 4096
-#define NUM_FRAMES 5
-#define NUM_PAGINAS 25     // isso seria a mem virtual, que provavelmente não vamos implementar
-#define NUM_PAGINAS_PROC 8 // por processo
-#define QTD_PROCESSOS 5
-*/
-
 typedef struct
 {
     int id; // será usado para armazenar o # de alocação do frame, para implementar FIFO

@@ -11,6 +11,7 @@
 #include "utils.h"
 
 // ---------- FUNÇÕES DE GERENCIAMENTO DA TABELA DE PAGINAS ----------
+int indiceMenorFrameIDnaMemFisica(frame memoriaFisica[], int NUM_FRAMES);
 
 // retorna o indice de um endereço virtual no espaço de endereçamento do processo
 int buscarIndicePorEnderecoVirtual(linhaTabelaDePaginas tabelaPaginas[], int end_pagina, int NUM_PAGINAS);
@@ -25,12 +26,12 @@ int verificarFrameDePagina(int indicePagina, processo *proc);
 int buscarFrameLivre(frame memoriaFisica[], int NUM_FRAMES);
 
 // alocar um frame da memória física para uma página de um processo
-int alocarFrame(frame memoriaFisica[], processo *proc, int end_pagina, int NUM_FRAMES, int TAMANHO_PAGINA);
+int alocarFrame(frame memoriaFisica[], processo *proc, int end_pagina, int NUM_FRAMES, int TAMANHO_PAGINA, int numAlocacaoFrame);
 
 int indiceFrameParaIndicePagina(processo proc, int indiceFrame, int NUM_PAGINAS_PROC);
 
 // desalocar um frame da memória física
-int desalocarFrame(frame memoriaFisica[], processo processos[], int NUM_PAGINAS_PROC, int NUM_FRAMES);
+int desalocarFrame(frame memoriaFisica[], processo processos[], int indiceParaDesalocar, int NUM_PAGINAS_PROC, int NUM_FRAMES);
 
 void liberarMemoriaProcesso(processo *proc, int NUM_PAGINAS_PROC);
 

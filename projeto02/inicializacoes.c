@@ -12,7 +12,7 @@ void inicializarMemoFisica(frame memoriaFisica[], int NUM_FRAMES, int TAMANHO_FR
     for (int i = 0; i < NUM_FRAMES; i++)
     {
         memoriaFisica[i].dados = (char *)malloc(TAMANHO_FRAME * sizeof(char));
-        memoriaFisica[i].id = i;
+        memoriaFisica[i].id = -1; // inicializar IDs com -1 pois serão usado para decidir FIFO na desalocação
         memoriaFisica[i].ocupado = false;
         memoriaFisica[i].alterado = false;
         memoriaFisica[i].pagina_id = -1;
