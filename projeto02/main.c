@@ -15,6 +15,16 @@ int main()
     system("chcp 65001 > nul");
 #endif
 
+    // definição das constantes de tamanho para as estruturas
+    // são valores padrão que serão sobrescritos pelo arquivo de configuração
+    // mantive nome em CAPS pois eram #defines e não quero reescreveer tudo
+    int TAMANHO_FRAME = 4096;
+    int TAMANHO_PAGINA = 4096;
+    int NUM_FRAMES = 5;
+    int NUM_PAGINAS = 25;     // isso seria a mem virtual, que provavelmente não vamos implementar
+    int NUM_PAGINAS_PROC = 8; // por processo
+    int QTD_PROCESSOS = 5;
+
     // abertura do LOG
     FILE *arquivoLog = fopen("logSimulador.txt", "w");
     if (arquivoLog == NULL)
@@ -35,7 +45,7 @@ int main()
     fprintf(arquivoLog, "Inicializando estruturas...\n");
     // criar memoria fisica
     frame memoriaFisica[NUM_FRAMES];
-    inicializarMemoFisica(memoriaFisica);
+    inicializarMemoFisica(memoriaFisica, NUM_FRAMES, TAMANHO_FRAME);
     fprintf(arquivoLog, "Memória física inicializada!\n");
 
     // criar processos
@@ -43,7 +53,7 @@ int main()
     for (int i = 0; i < QTD_PROCESSOS; i++)
     {
         processo temp;
-        int pid = inicializarProcesso(&temp, i);
+        int pid = inicializarProcesso(&temp, i, NUM_PAGINAS_PROC, TAMANHO_PAGINA);
         fprintf(arquivoLog, "Processo PID=%d inicializado!\n", pid);
 
         processos[i] = temp;

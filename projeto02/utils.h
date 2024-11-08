@@ -6,7 +6,7 @@ int gerarNumeroAleatorio(int max);
 
 #include <stdio.h>
 
-void imprimirMemoriaFisica(frame frames[], FILE *arquivoLog);
+void imprimirMemoriaFisica(frame frames[], FILE *arquivoLog, int NUM_FRAMES);
 
 void printArray(int arr[], int size, FILE *arquivoLog);
 

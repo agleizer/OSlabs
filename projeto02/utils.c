@@ -12,7 +12,7 @@ int gerarNumeroAleatorio(int max)
 
 #include <stdio.h>
 
-void imprimirMemoriaFisica(frame frames[], FILE *arquivoLog)
+void imprimirMemoriaFisica(frame frames[], FILE *arquivoLog, int NUM_FRAMES)
 {
     fprintf(arquivoLog, "Estado da Memoria Fisica:\n");
     fprintf(arquivoLog, "Imprimindo %d frames\n", NUM_FRAMES);
