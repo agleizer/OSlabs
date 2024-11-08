@@ -1,0 +1,26 @@
+// Bem-vindo ao simulador de sistemas operacionais do Alan e do Caio!
+// Altere as confiogurações abaixo para mudar as configurações do simulador
+
+// definição do tamanho do frame e da página, em bytes!
+// os tamanhos dever ser IGUAIS
+TAMANHO_FRAME 4096
+TAMANHO_PAGINA 4096
+
+// quantidade de frames na memória principal
+NUM_FRAMES 15
+
+// quantidade de páginas na memoria virtual (em disco)
+// atenção: a memória virtual ainda não foi implementada
+NUM_PAGINAS 25
+
+// quantidade de páginas no espaço de endereçamento do processo
+NUM_PAGINAS_PROC 35
+
+// quanttidade de processos que serão inicializados
+QTD_PROCESSOS 10
+
+// delay (em nanosegudos) para o acesso à memória
+DELAY_MEM_SEC 10
+
+// nome do arquivo de log para exportação
+NOME_LOG logSimulador.txt

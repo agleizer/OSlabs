@@ -8,16 +8,9 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define TAMANHO_FRAME 4096
-#define TAMANHO_PAGINA 4096
-#define NUM_FRAMES 5
-#define NUM_PAGINAS 25     // isso seria a mem virtual, que provavelmente não vamos implementar
-#define NUM_PAGINAS_PROC 8 // por processo
-#define QTD_PROCESSOS 5
-
 typedef struct
 {
-    int id;
+    int id; // será usado para armazenar o # de alocação do frame, para implementar FIFO
     bool ocupado;
     bool alterado;   // indica se o conteúdo foi alterado desde que a página foi carregada no frame // ALAN: acho que precisa ser no frame, para saber se precisa copiar de volta pra mem virtual ou só apagar
     int processo_id; // ID do processo que está usando o frame (-1 se livre)
@@ -44,11 +37,11 @@ typedef struct
 typedef struct
 {
     int pid;
-    int *enderecos; // ainda não entendi o que é isso.......
+    int *enderecos;
     int num_enderecos;
     int tamanho_processo;
-    pagina *espacoEnderecamento;         //[NUM_PAGINAS_PROC]
-    linhaTabelaDePaginas *tabelaPaginas; //[NUM_PAGINAS_PROC]
+    pagina *espacoEnderecamento;
+    linhaTabelaDePaginas *tabelaPaginas;
 } processo;
 
 #endif

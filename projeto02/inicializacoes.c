@@ -7,12 +7,12 @@
 #include "inicializacoes.h"
 #include "utils.h"
 
-void inicializarMemoFisica(frame memoriaFisica[])
+void inicializarMemoFisica(frame memoriaFisica[], int NUM_FRAMES, int TAMANHO_FRAME)
 {
     for (int i = 0; i < NUM_FRAMES; i++)
     {
         memoriaFisica[i].dados = (char *)malloc(TAMANHO_FRAME * sizeof(char));
-        memoriaFisica[i].id = i;
+        memoriaFisica[i].id = -1; // inicializar IDs com -1 pois serão usado para decidir FIFO na desalocação
         memoriaFisica[i].ocupado = false;
         memoriaFisica[i].alterado = false;
         memoriaFisica[i].pagina_id = -1;
@@ -21,7 +21,7 @@ void inicializarMemoFisica(frame memoriaFisica[])
 }
 
 // aqui, estaríamos simulando a mem. virtual em disco, que o Lucas disse ser opcional
-void inicializarMemoVirtual(pagina memoriaVirtual[])
+void inicializarMemoVirtual(pagina memoriaVirtual[], int NUM_PAGINAS, int TAMANHO_PAGINA)
 {
     for (int i = 0; i < NUM_PAGINAS; i++)
     {
@@ -32,7 +32,7 @@ void inicializarMemoVirtual(pagina memoriaVirtual[])
 }
 
 // Inicializa a tabela de páginas do processo com espaço de endereçamento
-void inicializarTabela(linhaTabelaDePaginas linhas_tabela[])
+void inicializarTabela(linhaTabelaDePaginas linhas_tabela[], int NUM_PAGINAS_PROC)
 {
     for (int i = 0; i < NUM_PAGINAS_PROC; i++)
     {
@@ -42,7 +42,7 @@ void inicializarTabela(linhaTabelaDePaginas linhas_tabela[])
 }
 
 // inicializa processo, retorna PID
-int inicializarProcesso(processo *proc, int pid /*, int numEnderecos*/)
+int inicializarProcesso(processo *proc, int pid, int NUM_PAGINAS_PROC, int TAMANHO_PAGINA)
 {
     proc->pid = pid;
     proc->num_enderecos = NUM_PAGINAS_PROC; // numEnderecos;
@@ -62,6 +62,6 @@ int inicializarProcesso(processo *proc, int pid /*, int numEnderecos*/)
     }
 
     proc->tabelaPaginas = (linhaTabelaDePaginas *)malloc(NUM_PAGINAS_PROC * sizeof(linhaTabelaDePaginas));
-    inicializarTabela(proc->tabelaPaginas); // Inicializa a tabela de páginas do processo
+    inicializarTabela(proc->tabelaPaginas, NUM_PAGINAS_PROC); // Inicializa a tabela de páginas do processo
     return pid;
 }

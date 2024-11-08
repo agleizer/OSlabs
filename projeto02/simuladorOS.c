@@ -10,8 +10,23 @@
 
 // ---------- FUNÇÕES DE GERENCIAMENTO DA TABELA DE PAGINAS ----------
 
+int indiceMenorFrameIDnaMemFisica(frame memoriaFisica[], int NUM_FRAMES)
+{
+    int menorIndice = 0;
+    int menorFrameID = memoriaFisica[menorIndice].id;
+    for (int i = 1; i < NUM_FRAMES; i++)
+    {
+        if (memoriaFisica[i].id < menorFrameID)
+        {
+            menorFrameID = memoriaFisica[i].id;
+            menorIndice = i;
+        }
+    }
+    return menorIndice;
+}
+
 // retorna o indice de um endereço virtual no espaço de endereçamento do processo
-int buscarIndicePorEnderecoVirtual(linhaTabelaDePaginas tabelaPaginas[], int end_pagina)
+int buscarIndicePorEnderecoVirtual(linhaTabelaDePaginas tabelaPaginas[], int end_pagina, int NUM_PAGINAS)
 {
     for (int i = 0; i < NUM_PAGINAS; i++)
     {
@@ -26,7 +41,7 @@ int buscarIndicePorEnderecoVirtual(linhaTabelaDePaginas tabelaPaginas[], int end
 
 // ---------- FUNÇÕES DE MAPEAMENTO ----------
 
-int traduzirEndVirtualParaPagina(int endereco)
+int traduzirEndVirtualParaPagina(int endereco, int TAMANHO_PAGINA)
 {
     int pagina = endereco / TAMANHO_PAGINA;
     // printf("Endereço virtual %d está localizado na página %d\n", endereco, pagina);
@@ -48,7 +63,7 @@ int verificarFrameDePagina(int indicePagina, processo *proc)
 }
 
 // procura por um frame livre na mem. física, retorna o indíce ou -1
-int buscarFrameLivre(frame memoriaFisica[])
+int buscarFrameLivre(frame memoriaFisica[], int NUM_FRAMES)
 {
     for (int i = 0; i < NUM_FRAMES; i++)
     {
@@ -63,9 +78,9 @@ int buscarFrameLivre(frame memoriaFisica[])
 }
 
 // alocar um frame da memória física para uma página de um processo
-int alocarFrame(frame memoriaFisica[], processo *proc, int end_pagina)
+int alocarFrame(frame memoriaFisica[], processo *proc, int end_pagina, int NUM_FRAMES, int TAMANHO_PAGINA, int numAlocacaoFrame)
 {
-    int indice_frame = buscarFrameLivre(memoriaFisica);
+    int indice_frame = buscarFrameLivre(memoriaFisica, NUM_FRAMES); // TODO esa busca é repetida.. poderia passar o inmdice como argumento!!!
     if (indice_frame == -1)
     {
         // printf("LOG: Sem frames livres na memória física.\n"); // TODO: alterar para fprintf ou similar
@@ -73,6 +88,7 @@ int alocarFrame(frame memoriaFisica[], processo *proc, int end_pagina)
     }
 
     // Atualiza o frame na memória física
+    memoriaFisica[indice_frame].id = numAlocacaoFrame;
     memoriaFisica[indice_frame].ocupado = true;
     memoriaFisica[indice_frame].processo_id = proc->pid;
     memoriaFisica[indice_frame].pagina_id = end_pagina;
@@ -96,7 +112,7 @@ int alocarFrame(frame memoriaFisica[], processo *proc, int end_pagina)
     return indice_frame;
 }
 
-int indiceFrameParaIndicePagina(processo proc, int indiceFrame)
+int indiceFrameParaIndicePagina(processo proc, int indiceFrame, int NUM_PAGINAS_PROC)
 {
     for (int i = 0; i < NUM_PAGINAS_PROC; i++)
     {
@@ -111,13 +127,15 @@ int indiceFrameParaIndicePagina(processo proc, int indiceFrame)
 }
 
 // desalocar um frame da memória física
-int desalocarFrame(frame memoriaFisica[], processo processos[])
+int desalocarFrame(frame memoriaFisica[], processo processos[], int indiceParaDesalocar, int NUM_PAGINAS_PROC, int NUM_FRAMES)
 {
-    int indice_frame = gerarNumeroAleatorio(NUM_FRAMES);
+    // int indice_frame = gerarNumeroAleatorio(NUM_FRAMES); // implementação original, selecionava um frame aleatoriamente
+    // int indice_frame = indiceMenorFrameIDnaMemFisica(memoriaFisica, NUM_FRAMES); // nova implementação FIFO
+    int indice_frame = indiceParaDesalocar;
 
     // atualizar a tabela de paginas do processo cuja pagina foi removida
     int indiceProcessoAlterado = memoriaFisica[indice_frame].processo_id;
-    int indiceDaPaginaDoProcAlterado = indiceFrameParaIndicePagina(processos[indiceProcessoAlterado], indice_frame);
+    int indiceDaPaginaDoProcAlterado = indiceFrameParaIndicePagina(processos[indiceProcessoAlterado], indice_frame, NUM_PAGINAS_PROC);
 
     processos[indiceProcessoAlterado].tabelaPaginas[indiceDaPaginaDoProcAlterado].end_frame = -1;
     // printf("Processo de desalocação: frame %d foi liberado com sucesso.\n", indice_frame);
@@ -131,7 +149,7 @@ int desalocarFrame(frame memoriaFisica[], processo processos[])
     return indice_frame;
 }
 
-void liberarMemoriaProcesso(processo *proc)
+void liberarMemoriaProcesso(processo *proc, int NUM_PAGINAS_PROC)
 {
     free(proc->enderecos);
     for (int i = 0; i < NUM_PAGINAS_PROC; i++)
@@ -142,7 +160,7 @@ void liberarMemoriaProcesso(processo *proc)
     free(proc->tabelaPaginas);
 }
 
-void liberarMemoriaFisica(frame memoriaFisica[])
+void liberarMemoriaFisica(frame memoriaFisica[], int NUM_FRAMES)
 {
     for (int i = 0; i < NUM_FRAMES; i++)
     {
