@@ -5,6 +5,7 @@
 #include <time.h>   // para rand
 #include <unistd.h> // para elitura de argc e argv
 #include <locale.h>
+#include <signal.h> // para SIGINT
 #include "estruturasMemoria.h"
 #include "inicializacoes.h"
 #include "utils.h"
@@ -16,6 +17,29 @@ TODO PARA RODAR NO LINUX
 - remover ifndef _WIN32 em main
 
 */
+// variaveis globais para gerenciamento do SIGINT
+volatile bool pausado = false;
+volatile bool sair = false;
+void gerenciarSigint(int sig)
+{
+    if (!pausado)
+    {
+        printf("\nPrograma pausado.\nPressione Enter para continuar ou Q para sair...\n");
+        pausado = true;
+
+        // programa estava pausando e retomando imediatamente...
+        // limpar buffer
+        int ch;
+        while ((ch = getchar()) != '\n' && ch != EOF)
+            ;
+    }
+}
+
+void gerenciarSigterm(int sig)
+{
+    printf("\nTerminando execução\n");
+    sair = true;
+}
 
 int main(int argc, char *argv[])
 {
@@ -38,6 +62,10 @@ int main(int argc, char *argv[])
     int DELAY_MEM_SEC = 10; // delay para acesso a memoria secundaria
     char NOME_LOG[50] = "logSimuladorPadrao.txt";
     char NOME_CONFIG[50] = "config.txt";
+
+    // variaveis para controle do SIGINT
+    signal(SIGINT, gerenciarSigint);
+    signal(SIGTERM, gerenciarSigterm);
 
     // estatísticas interessantes
     int totalPageFaults = 0;
@@ -286,8 +314,28 @@ int main(int argc, char *argv[])
 
     // simulação dos processos tentando acessar os endereços
     fprintf(arquivoLog, "\n\n>> INICIANDO ACESSOS <<\n");
-    for (int i = 0; i < QTD_ACESSOS; i++)
+    // for (int i = 0; i < QTD_ACESSOS; i++)
+    int i = 0;
+    while (!sair && i < QTD_ACESSOS)
     {
+        if (pausado)
+        {
+            char input;
+            // esperar pelo Enter do usuário ou Q para sair
+            do
+            {
+                input = getchar();
+            } while (input != '\n' && input != 'q' && input != 'Q');
+
+            if (input == 'q' || input == 'Q')
+            {
+                printf("Encerrando programa...\n");
+                break;
+            }
+            pausado = false;
+            printf("Retomando execução...\n");
+        }
+
         fprintf(arquivoLog, "T = %d\n", relogio++);
         int procAtual = gerarNumeroAleatorio(QTD_PROCESSOS);
         fprintf(arquivoLog, "Processo atual = %d\n", procAtual);
@@ -365,9 +413,8 @@ int main(int argc, char *argv[])
         liberarMemoriaProcesso(&processos[i], NUM_PAGINAS_PROC);
         free(&processos[i]);
     }
-    free(processos);
+
     liberarMemoriaFisica(memoriaFisica, NUM_FRAMES);
-    free(memoriaFisica);
 
     return 0;
 }

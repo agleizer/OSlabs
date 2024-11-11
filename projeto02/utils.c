@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <signal.h>
 #include "estruturasMemoria.h"
 
 int gerarNumeroAleatorio(int max)
