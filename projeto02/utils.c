@@ -14,7 +14,7 @@ int gerarNumeroAleatorio(int max)
 
 void imprimirHelp()
 {
-    printf("Uso: ./simuladorOS.exe [opção]\n");
+    printf("Uso: ./simuladorOS <opção>\n");
     printf("Opções (selecione uma):\n");
     printf("  -a <config.txt>  Especificar um arquivo de configuração.\n");
     printf("     NÃO digite \"<\" ou \">\".\n");

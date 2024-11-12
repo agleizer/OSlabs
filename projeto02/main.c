@@ -10,7 +10,7 @@
    Para compilar: gcc *.c -o simulador
 
    Para executar:
-    Uso: ./simuladorOS.exe [opção]
+    Uso: ./simuladorOS <opção>
     Opções (selecione uma):
       -a <config.txt>  Especificar um arquivo de configuração.
          NÃO digite "<" ou ">".
@@ -130,6 +130,7 @@ int main(int argc, char *argv[])
             }
             opcaoM = true;
             printf("Você selecionou leitura manual dos valores.\n");
+            printf("Não pause o programa durante a leitura de valores.\n");
             break;
         case 'h': // help e variacoes
         case '?':
