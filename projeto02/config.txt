@@ -7,23 +7,23 @@ TAMANHO_FRAME 4096
 TAMANHO_PAGINA 4096
 
 // quantidade de frames na memória principal
-NUM_FRAMES 15
+NUM_FRAMES 6
 
-// quantidade de páginas na memoria virtual (em disco)
+// quantidade de páginas na memoria virtual (swap em disco)
 // atenção: a memória virtual ainda não foi implementada
-NUM_PAGINAS 25
+NUM_PAGINAS 10
 
 // quantidade de páginas no espaço de endereçamento do processo
-NUM_PAGINAS_PROC 35
+NUM_PAGINAS_PROC 7
 
 // quanttidade de processos que serão inicializados
-QTD_PROCESSOS 10
+QTD_PROCESSOS 11
 
 // quanttidade de acessos que serão realizados no total pelos processos
-QTD_ACESSOS 100
+QTD_ACESSOS 18
 
-// delay (em nanosegudos) para o acesso à memória
-DELAY_MEM_SEC 10
+// delay (em microsegudos) para o acesso à memória
+DELAY_MEM_SEC 5
 
 // nome do arquivo de log para exportação
 NOME_LOG logSimuladorConfig.txt

@@ -1,9 +1,36 @@
+/* PROJETO 02 - SIMULADOR DE PAGINAÇÃO
+   Sistemas Operacionais - 04P11
+
+   Alan Meniuk Gleizer – 10416804
+   Caio Vinicius Corsini Filho – 10342005
+
+   >> ATENÇÃO: este programa foi desenvolvido para execução em Linux e testado no Ubuntu 24.04.1 LTS
+
+   Orientações de compilação e execução
+   Para compilar: gcc *.c -o simulador
+
+   Para executar:
+    Uso: ./simuladorOS.exe [opção]
+    Opções (selecione uma):
+      -a <config.txt>  Especificar um arquivo de configuração.
+         NÃO digite "<" ou ">".
+         mais infos no arquivo config.txt
+      -m               Entrada manual dos parâmetros.
+      -help            Mostrar essa mensagem de ajuda
+      <vazio>          Uso dos valores padrão.
+
+   Durante a execução, pressione Ctrl+C para pausar a execução.
+   Uma execução pausada pode ser retomada pressionando Enter.
+   Pressione Ctrl+\ para encerrar o programa durante a execução.
+*/
+
+#define _GNU_SOURCE
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>   // para rand
-#include <unistd.h> // para elitura de argc e argv
+#include <unistd.h> // para leitura de argc e argv
 #include <locale.h>
 #include <signal.h> // para SIGINT
 #include "estruturasMemoria.h"
@@ -11,20 +38,15 @@
 #include "utils.h"
 #include "simuladorOS.h"
 
-/*
-TODO PARA RODAR NO LINUX
-- em utils.c, alterar a função de pausa
-- remover ifndef _WIN32 em main
-
-*/
 // variaveis globais para gerenciamento do SIGINT
 volatile bool pausado = false;
 volatile bool sair = false;
+
 void gerenciarSigint(int sig)
 {
     if (!pausado)
     {
-        printf("\nPrograma pausado.\nPressione Enter para continuar ou Q para sair...\n");
+        printf("\nPrograma pausado.\nPressione Enter para retomar ou Ctrl+\\ para sair...\n");
         pausado = true;
 
         // programa estava pausando e retomando imediatamente...
@@ -35,45 +57,39 @@ void gerenciarSigint(int sig)
     }
 }
 
-void gerenciarSigterm(int sig)
+void gerenciarSigquit(int sig)
 {
-    printf("\nTerminando execução\n");
+    printf("\nEncerrando execução...\n");
     sair = true;
 }
 
 int main(int argc, char *argv[])
 {
     setlocale(LC_ALL, "pt_BR.UTF-8");
-    // Configura o terminal do powershell para UTF-8 no Windows.. remover na entrega do projeto
-
-#ifdef _WIN32
-    system("chcp 65001 > nul");
-#endif
 
     // -- CONSTANTES DO PROGRAMA
     // valores padrão que serão sobrescritos pelo arquivo de configuração ou pela entrada manual
     int TAMANHO_FRAME = 4096;
     int TAMANHO_PAGINA = 4096;
     int NUM_FRAMES = 5;
-    int NUM_PAGINAS = 25;     // isso seria a mem virtual, que provavelmente não vamos implementar
-    int NUM_PAGINAS_PROC = 8; // por processo
+    int NUM_PAGINAS = 25;     // isso seria a mem virtual (swap), que ainda não está implementada
+    int NUM_PAGINAS_PROC = 8; // tamanho do espaço de endereçamento
     int QTD_PROCESSOS = 5;
-    int QTD_ACESSOS = 100;
-    int DELAY_MEM_SEC = 10; // delay para acesso a memoria secundaria
+    int QTD_ACESSOS = 20;
+    int DELAY_MEM_SEC = 10; // delay para acesso a memoria secundaria (em microsegundos)
     char NOME_LOG[50] = "logSimuladorPadrao.txt";
     char NOME_CONFIG[50] = "config.txt";
 
     // variaveis para controle do SIGINT
     signal(SIGINT, gerenciarSigint);
-    signal(SIGTERM, gerenciarSigterm);
+    signal(SIGQUIT, gerenciarSigquit);
 
-    // estatísticas interessantes
+    // estatísticas
     int totalPageFaults = 0;
     int totalPageHits = 0;
 
     // LEITURA DE ARGC E ARGV
     int opt;
-    // char *configFile = NULL;
     bool opcaoA = false;
     bool opcaoM = false;
 
@@ -218,7 +234,7 @@ int main(int argc, char *argv[])
         // Input e validação de DELAY_MEM_SEC
         do
         {
-            printf("Informe o tempo de acesso à memória secundária (em ns, >0): ");
+            printf("Informe o tempo de acesso à memória secundária (em microsegundos, >0): ");
             scanf("%d", &DELAY_MEM_SEC);
             if (DELAY_MEM_SEC <= 0)
             {
@@ -246,18 +262,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    /*
     fprintf(arquivoLog, ">> INICIANDO SIMULADOR <<\n\n");
-    if (!arquivoConfigEncontrado)
-    {
-        fprintf(arquivoLog, "Arquivo de configuração não encontrado!\nUtilizando valores padrão.\n");
-        fprintf(arquivoLog, "Se você deseja utilizar um arquivo de configuração, é necessário que exista um \"config.txt\" no diretório do simulador.\n");
-    }
-    else
-    {
-        fprintf(arquivoLog, "Arquivo de configuração encontrado!\nUtilizando valores definidos:\n");
-    }
-    */
 
     printf("\nCarregamento bem-sucedido.\nValores definidos:\n");
     printf("TAMANHO_FRAME = %d\n", TAMANHO_FRAME);
@@ -270,7 +275,6 @@ int main(int argc, char *argv[])
     printf("DELAY_MEM_SEC = %d\n", DELAY_MEM_SEC);
     printf("NOME_LOG = %s\n", NOME_LOG);
 
-    fprintf(arquivoLog, ">>INICIANDO SIMULADOR<<\n");
     fprintf(arquivoLog, "TAMANHO_FRAME: %d\n", TAMANHO_FRAME);
     fprintf(arquivoLog, "TAMANHO_PAGINA: %d\n", TAMANHO_PAGINA);
     fprintf(arquivoLog, "NUM_FRAMES: %d\n", NUM_FRAMES);
@@ -283,7 +287,7 @@ int main(int argc, char *argv[])
 
     fprintf(arquivoLog, ">> INICIANDO SIMULAÇÃO <<\n\n");
 
-    // seed para desalocação aleatória
+    // seed para números aleatórios
     srand(time(NULL));
 
     // iniciando o clock
@@ -325,13 +329,8 @@ int main(int argc, char *argv[])
             do
             {
                 input = getchar();
-            } while (input != '\n' && input != 'q' && input != 'Q');
+            } while (input != '\n');
 
-            if (input == 'q' || input == 'Q')
-            {
-                printf("Encerrando programa...\n");
-                break;
-            }
             pausado = false;
             printf("Retomando execução...\n");
         }
@@ -360,7 +359,7 @@ int main(int argc, char *argv[])
             totalPageFaults++;
             fprintf(arquivoLog, "PAGE FAULT: página %d do processo PID=%d NÃO está na memória.\n", paginaAtual, processos[procAtual].pid);
             pausa(DELAY_MEM_SEC); // pausa para simular acesso a memoria secundaria
-            fprintf(arquivoLog, "O acesso à memória secundária levou %d ns\n", DELAY_MEM_SEC);
+            fprintf(arquivoLog, "O acesso à memória secundária levou %d microsegundos\n", DELAY_MEM_SEC);
             int indiceLivre = (int)buscarFrameLivre(memoriaFisica, NUM_FRAMES);
 
             if (indiceLivre != -1)
@@ -377,7 +376,7 @@ int main(int argc, char *argv[])
                 fprintf(arquivoLog, "Nenhum frame livre foi localizado! Selecionando frame para desalocar...\n");
                 int indiceFrameSeraDesalocado = indiceMenorFrameIDnaMemFisica(memoriaFisica, NUM_FRAMES);
                 int frameIDSeraDesalocado = memoriaFisica[indiceFrameSeraDesalocado].id;
-                fprintf(arquivoLog, "O frame mais antigo na memória é o frameID: %d, no índice %d.\n", frameIDSeraDesalocado, indiceFrameSeraDesalocado);
+                fprintf(arquivoLog, "O frame mais antigo na memória é o frameID: %d, no índice %d (posição %d).\n", frameIDSeraDesalocado, indiceFrameSeraDesalocado, indiceFrameSeraDesalocado+1);
                 int indiceFrameDesalocado = desalocarFrame(memoriaFisica, processos, indiceFrameSeraDesalocado, NUM_PAGINAS_PROC, NUM_FRAMES);
                 fprintf(arquivoLog, "Processo de desalocação: frame no índice %d foi liberado com sucesso.\n", indiceFrameDesalocado);
                 indiceLivre = (int)buscarFrameLivre(memoriaFisica, NUM_FRAMES);
@@ -390,6 +389,7 @@ int main(int argc, char *argv[])
         fprintf(arquivoLog, "\n");
         imprimirMemoriaFisica(memoriaFisica, arquivoLog, NUM_FRAMES);
         fprintf(arquivoLog, "\n\n");
+        i++; // incrementar o contador geral
     }
 
     fprintf(arquivoLog, ">> ESTATÍSTICAS <<\n");
@@ -398,20 +398,19 @@ int main(int argc, char *argv[])
     fprintf(arquivoLog, "Total de page faults: %d\n", totalPageFaults);
     if (QTD_ACESSOS != totalPageFaults + totalPageHits)
     {
-        fprintf(arquivoLog, "ATENÇÃO: alguns acessos não foram contabilizados.\n", totalPageFaults);
+        fprintf(arquivoLog, "ATENÇÃO: alguns acessos não foram contabilizados.\n");
     }
     fprintf(arquivoLog, "\n");
     fprintf(arquivoLog, "%% de page hits: %.2f%%\n", (float)totalPageHits / QTD_ACESSOS * 100);
     fprintf(arquivoLog, "%% de page faults: %.2f%%\n", (float)totalPageFaults / QTD_ACESSOS * 100);
     fprintf(arquivoLog, "\n");
-    fprintf(arquivoLog, "Tempo total gasto acessando a memória secundária: %d ns\n", totalPageFaults * DELAY_MEM_SEC);
+    fprintf(arquivoLog, "Tempo total gasto acessando a memória secundária: %d microsegundos\n", totalPageFaults * DELAY_MEM_SEC);
 
     // LIBERAÇÃO DA MEMÓRIA
     fclose(arquivoLog);
     for (int i = 0; i < QTD_PROCESSOS; i++)
     {
         liberarMemoriaProcesso(&processos[i], NUM_PAGINAS_PROC);
-        free(&processos[i]);
     }
 
     liberarMemoriaFisica(memoriaFisica, NUM_FRAMES);
