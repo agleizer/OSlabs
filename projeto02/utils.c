@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <signal.h>
+#include <unistd.h>
 #include "estruturasMemoria.h"
 
 int gerarNumeroAleatorio(int max)
@@ -12,13 +14,18 @@ int gerarNumeroAleatorio(int max)
 
 void imprimirHelp()
 {
-    printf("Uso: ./simuladorOS.exe [opção]\n");
+    printf("Uso: ./simuladorOS <opção>\n");
     printf("Opções (selecione uma):\n");
     printf("  -a <config.txt>  Especificar um arquivo de configuração.\n");
-    printf("                      mais infos no arquivo config.txt\n");
+    printf("     NÃO digite \"<\" ou \">\".\n");
+    printf("     mais infos no arquivo config.txt\n");
     printf("  -m               Entrada manual dos parâmetros.\n");
     printf("  -help            Mostrar essa mensagem de ajuda\n");
     printf("  <vazio>          Uso dos valores padrão.\n");
+    printf("\n");
+    printf("Durante a execução, pressione Ctrl+C para pausar a execução.\n");
+    printf("Uma execução pausada pode ser retomada pressionando Enter.\n");
+    printf("Pressione Ctrl+\\ para encerrar o programa durante a execução.\n");
 }
 
 bool carregarConfig(char *NOME_CONFIG, int *TAMANHO_FRAME, int *TAMANHO_PAGINA, int *NUM_FRAMES,
@@ -121,19 +128,19 @@ void imprimirMemoriaFisica(frame frames[], FILE *arquivoLog, int NUM_FRAMES)
 
     for (int i = 0; i < NUM_FRAMES; i++)
     {
-        fprintf(arquivoLog, "--------\n");
+        fprintf(arquivoLog, "----------\n");
 
         if (frames[i].ocupado)
         {
-            fprintf(arquivoLog, "| P%d-%d |\n", frames[i].processo_id, frames[i].pagina_id);
+            fprintf(arquivoLog, "| P%02d-%02d |\n", frames[i].processo_id, frames[i].pagina_id);
         }
         else
         {
-            fprintf(arquivoLog, "| Livre |\n");
+            fprintf(arquivoLog, "|  LIVRE   |\n");
         }
     }
 
-    fprintf(arquivoLog, "--------\n");
+    fprintf(arquivoLog, "----------\n");
 }
 
 void printArray(int arr[], int size, FILE *arquivoLog)
@@ -155,12 +162,12 @@ void printProcessos(processo processos[], int size, FILE *arquivoLog)
     fprintf(arquivoLog, "Lista de Processos:\n");
     for (int i = 0; i < size; i++)
     {
-        fprintf(arquivoLog, "Processo %d:\n", processos[i].pid);
-        fprintf(arquivoLog, "  Tamanho do Processo: %d\n", processos[i].tamanho_processo);
+        fprintf(arquivoLog, "Processo %02d:\n", processos[i].pid);
+        //fprintf(arquivoLog, "  Tamanho do Processo: %d\n", processos[i].tamanho_processo);
         fprintf(arquivoLog, "  Numero de Enderecos: %d\n", processos[i].num_enderecos);
 
         // Print enderecos array, if initialized
-        fprintf(arquivoLog, "  Enderecos: ");
+        fprintf(arquivoLog, "  Enderecos que serão acessados: ");
         if (processos[i].enderecos != NULL && processos[i].num_enderecos > 0)
         {
             for (int j = 0; j < processos[i].num_enderecos; j++)
@@ -177,21 +184,7 @@ void printProcessos(processo processos[], int size, FILE *arquivoLog)
 }
 
 // ---------- FUNÇÕES PARA SIMULAÇÃO DE PAUSA ----------
-/* recomendação da internet parece ser usar funções diferentes no windows e linux.
-vou deixar ambas implementadas, pois acredito que vamos desenvolver mais no windows
-mas a entrega é em linux... */
-
-// PARA LINUX
-/*
-#include <unistd.h>
-
-void pausa(int milisegundos)
+void pausa(int microsegundos)
 {
-    int microsegundos = milisegundos * 1000;
-    usleep(500000);
+    usleep(microsegundos);
 }
-*/
-
-// PARA WINDOWS
-#include <windows.h>
-void pausa(int milisegundos) { Sleep(milisegundos); }
