@@ -90,8 +90,7 @@ int main(int argc, char *argv[])
 
     // LEITURA DE ARGC E ARGV
     int opt;
-    bool opcaoA = false;
-    bool opcaoM = false;
+    char opcaoAtual = '\0'; // temp para armazenar a opção (para serem mutualmente exclusivas)
 
     if (argc == 1)
     {
@@ -103,10 +102,25 @@ int main(int argc, char *argv[])
 
     while ((opt = getopt(argc, argv, "a:mhelp")) != -1)
     {
+        // Check for multiple options
+        if (opcaoAtual && opcaoAtual != opt) {
+            printf("Erro: Você selecionou múltiplas opções incompatíveis (-%c e -%c).\n", opcaoAtual, opt);
+            imprimirHelp();
+            return 1;
+        }
+
+        opcaoAtual = opt; // Set the active option
+
         switch (opt)
         {
         case 'a':
-            opcaoA = true;
+            // se proximo arg começar com -, usuario selecionou duas opcoes incompativeis
+            if (optarg != NULL && optarg[0] == '-') {
+                printf("Erro: Opção -a precisa de um arquivo válido, mas recebeu \"%s\".\n", optarg);
+                imprimirHelp();
+                return 1;
+            }
+
             if (optarg == NULL)
             {
                 printf("AVISO: Você selecionou opção para ler arquivo de configuração, mas não informou o nome de um arquivo.\n");
@@ -120,22 +134,19 @@ int main(int argc, char *argv[])
                 printf("Opção -a selecionada com arquivo de configuração: %s\n", NOME_CONFIG);
             }
             break;
+
         case 'm':
-            if (opcaoA)
-            {
-                printf("Você não pode selecionar leitura de arquivo e leitura manual ao mesmo tempo.\n");
-                printf("Execute o programa com -help para ver as opções.\n");
-                printf("Terminando execução.\n");
-                return 1;
-            }
-            opcaoM = true;
             printf("Você selecionou leitura manual dos valores.\n");
             printf("Não pause o programa durante a leitura de valores.\n");
             break;
+
         case 'h': // help e variacoes
+
         case '?':
+        //contadorOpcao++;
             imprimirHelp();
             return 0;
+
         default:
             imprimirHelp();
             return 1;
@@ -149,7 +160,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    if (opcaoA)
+    if (opcaoAtual == 'a')
     {
         // procura por arquivo de config
         bool arquivoConfigEncontrado = carregarConfig(NOME_CONFIG, &TAMANHO_FRAME, &TAMANHO_PAGINA, &NUM_FRAMES, &NUM_PAGINAS, &NUM_PAGINAS_PROC, &QTD_PROCESSOS, &QTD_ACESSOS, &DELAY_MEM_SEC, NOME_LOG);
@@ -160,7 +171,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    if (opcaoM)
+    if (opcaoAtual == 'm')
     {
         // Input e validação de TAMANHO_FRAME
         do
@@ -187,7 +198,7 @@ int main(int argc, char *argv[])
         } while (NUM_FRAMES <= 0);
 
         /*
-        // Input e validação de NUM_PAGINAS
+        // Input e validação de NUM_PAGINAS.. ainda não foi implementado
         do
         {
             printf("Informe a quantidade de páginas na memória virtual (>0): ");
@@ -202,7 +213,7 @@ int main(int argc, char *argv[])
         // Input e validação de NUM_PAGINAS_PROC
         do
         {
-            printf("Informe a quantidade de páginas no espaço de endereçamento dos processos (>0): ");
+            printf("Informe a quantidade de páginas que cada processo deve acessar (>0): ");
             scanf("%d", &NUM_PAGINAS_PROC);
             if (NUM_PAGINAS_PROC <= 0)
             {
@@ -224,7 +235,7 @@ int main(int argc, char *argv[])
         // Input e validação de QTD_ACESSOS
         do
         {
-            printf("Informe a quantidade de acessos (>0): ");
+            printf("Informe a quantidade de acessos que serão realizado (total, >0): ");
             scanf("%d", &QTD_ACESSOS);
             if (QTD_ACESSOS <= 0)
             {
@@ -246,7 +257,7 @@ int main(int argc, char *argv[])
         // Input e validação de NOME_LOG
         do
         {
-            printf("Informe o nome do arquivo de log (string .txt): ");
+            printf("Informe o nome do arquivo de log (string, .txt): ");
             scanf("%s", NOME_LOG);
             if (strlen(NOME_LOG) == 0)
             {
@@ -263,30 +274,25 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    fprintf(arquivoLog, ">> INICIANDO SIMULADOR <<\n\n");
+    // array de outputs para fazer a impressão de dados no arquivo E terminal
+    FILE *outputs[] = {arquivoLog, stdout};
 
-    printf("\nCarregamento bem-sucedido.\nValores definidos:\n");
-    printf("TAMANHO_FRAME = %d\n", TAMANHO_FRAME);
-    printf("TAMANHO_PAGINA = %d\n", TAMANHO_PAGINA);
-    printf("NUM_FRAMES = %d\n", NUM_FRAMES);
-    printf("NUM_PAGINAS = %d\n", NUM_PAGINAS);
-    printf("NUM_PAGINAS_PROC = %d\n", NUM_PAGINAS_PROC);
-    printf("QTD_PROCESSOS = %d\n", QTD_PROCESSOS);
-    printf("QTD_ACESSOS = %d\n", QTD_ACESSOS);
-    printf("DELAY_MEM_SEC = %d\n", DELAY_MEM_SEC);
-    printf("NOME_LOG = %s\n", NOME_LOG);
+    for (int i = 0; i < 2; i++) {
+    fprintf(outputs[i], "\n>> INICIANDO SIMULADOR <<\n");
+    fprintf(outputs[i], "\nCarregamento bem-sucedido!\n\nValores definidos:\n");
 
-    fprintf(arquivoLog, "TAMANHO_FRAME: %d\n", TAMANHO_FRAME);
-    fprintf(arquivoLog, "TAMANHO_PAGINA: %d\n", TAMANHO_PAGINA);
-    fprintf(arquivoLog, "NUM_FRAMES: %d\n", NUM_FRAMES);
-    fprintf(arquivoLog, "NUM_PAGINAS: %d\n", NUM_PAGINAS);
-    fprintf(arquivoLog, "NUM_PAGINAS_PROC: %d\n", NUM_PAGINAS_PROC);
-    fprintf(arquivoLog, "QTD_PROCESSOS: %d\n", QTD_PROCESSOS);
-    fprintf(arquivoLog, "QTD_ACESSOS: %d\n", QTD_ACESSOS);
-    fprintf(arquivoLog, "DELAY_MEM_SEC: %d\n", DELAY_MEM_SEC);
-    fprintf(arquivoLog, "NOME_LOG: %s\n\n", NOME_LOG);
+    fprintf(outputs[i], "Tam. do frame (em bytes):            %d\n", TAMANHO_FRAME);
+    fprintf(outputs[i], "Tam. da página (em bytes):           %d\n", TAMANHO_PAGINA);
+    fprintf(outputs[i], "Qtd. frames na memória principal:    %d\n", NUM_FRAMES);
+    //fprintf(outputs[i], "Número de páginas na memória virtual (swap): %d\n", NUM_PAGINAS);
+    fprintf(outputs[i], "Qtd. pgs que cada proc. vai acessar: %d\n", NUM_PAGINAS_PROC);
+    fprintf(outputs[i], "Quantidade de processos:             %d\n", QTD_PROCESSOS);
+    fprintf(outputs[i], "Qtd. acessos a serem exec. (total):  %d\n", QTD_ACESSOS);
+    fprintf(outputs[i], "Delay acesso à mem. secundária (µs): %d\n", DELAY_MEM_SEC);
+    fprintf(outputs[i], "Nome do arquivo de log:              %s\n\n", NOME_LOG);
 
-    fprintf(arquivoLog, ">> INICIANDO SIMULAÇÃO <<\n\n");
+    fprintf(outputs[i], ">> INICIANDO SIMULAÇÃO <<\n\n");
+    }
 
     // seed para números aleatórios
     srand(time(NULL));
@@ -390,22 +396,36 @@ int main(int argc, char *argv[])
         fprintf(arquivoLog, "\n");
         imprimirMemoriaFisica(memoriaFisica, arquivoLog, NUM_FRAMES);
         fprintf(arquivoLog, "\n\n");
+
         i++; // incrementar o contador geral
     }
 
-    fprintf(arquivoLog, ">> ESTATÍSTICAS <<\n");
-    fprintf(arquivoLog, "Total de acessos: %d\n", QTD_ACESSOS);
-    fprintf(arquivoLog, "Total de page hits: %d\n", totalPageHits);
-    fprintf(arquivoLog, "Total de page faults: %d\n", totalPageFaults);
+    // simular barra progresso
+    for (int i = 0; i <= 100; ++i) {
+        imprimirBarraProgresso((float)i / 100);
+        pausa(10000);
+    }
+    printf("\n");
+
+    printf("\nSimulação concluída com êxito!\n");
+    printf("Os detalhes da simulação estão disponíveis no arquivo %s.\n", NOME_LOG);
+
+    // loop para imprimir estatísticas para arquivo e terminal[
+    for (int i = 0; i < 2; i++) {
+    fprintf(outputs[i], "\n>> ESTATÍSTICAS <<\n");
+    fprintf(outputs[i], "Total de acessos: %d\n", QTD_ACESSOS);
+    fprintf(outputs[i], "Total de page hits: %d\n", totalPageHits);
+    fprintf(outputs[i], "Total de page faults: %d\n", totalPageFaults);
     if (QTD_ACESSOS != totalPageFaults + totalPageHits)
     {
-        fprintf(arquivoLog, "ATENÇÃO: alguns acessos não foram contabilizados.\n");
+        fprintf(outputs[i], "ATENÇÃO: alguns acessos não foram contabilizados.\n");
     }
-    fprintf(arquivoLog, "\n");
-    fprintf(arquivoLog, "%% de page hits: %.2f%%\n", (float)totalPageHits / QTD_ACESSOS * 100);
-    fprintf(arquivoLog, "%% de page faults: %.2f%%\n", (float)totalPageFaults / QTD_ACESSOS * 100);
-    fprintf(arquivoLog, "\n");
-    fprintf(arquivoLog, "Tempo total gasto acessando a memória secundária: %d microsegundos\n", totalPageFaults * DELAY_MEM_SEC);
+    fprintf(outputs[i], "\n");
+    fprintf(outputs[i], "%% de page hits: %.2f%%\n", (float)totalPageHits / QTD_ACESSOS * 100);
+    fprintf(outputs[i], "%% de page faults: %.2f%%\n", (float)totalPageFaults / QTD_ACESSOS * 100);
+    fprintf(outputs[i], "\n");
+    fprintf(outputs[i], "Tempo total gasto acessando a memória secundária: %d µs\n", totalPageFaults * DELAY_MEM_SEC);
+    }
 
     // LIBERAÇÃO DA MEMÓRIA
     fclose(arquivoLog);
