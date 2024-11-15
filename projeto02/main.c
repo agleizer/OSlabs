@@ -400,8 +400,21 @@ int main(int argc, char *argv[])
         i++; // incrementar o contador geral
     }
 
-    // simular barra progresso
+    // simular barra progresso fora do loop principal para não quebrar nada!
     for (int i = 0; i <= 100; ++i) {
+        if (pausado)
+        {
+            char input;
+            // esperar pelo Enter do usuário ou Q para sair
+            do
+            {
+                input = getchar();
+            } while (input != '\n');
+
+            pausado = false;
+            printf("Retomando execução...\n");
+        }
+
         imprimirBarraProgresso((float)i / 100);
         pausa(10000);
     }
