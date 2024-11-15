@@ -10,7 +10,7 @@
    Para compilar: gcc *.c -o simulador
 
    Para executar:
-    Uso: ./simuladorOS <opção>
+    Uso: ./simulador <opção>
     Opções (selecione uma):
       -a <config.txt>  Especificar um arquivo de configuração.
          NÃO digite "<" ou ">".

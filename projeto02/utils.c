@@ -14,7 +14,7 @@ int gerarNumeroAleatorio(int max)
 
 void imprimirHelp()
 {
-    printf("Uso: ./simuladorOS <opção>\n");
+    printf("Uso: ./simulador <opção>\n");
     printf("Opções (selecione uma):\n");
     printf("  -a <config.txt>  Especificar um arquivo de configuração.\n");
     printf("     NÃO digite \"<\" ou \">\".\n");
@@ -28,18 +28,25 @@ void imprimirHelp()
     printf("Pressione Ctrl+\\ para encerrar o programa durante a execução.\n");
 }
 
-void imprimirBarraProgresso(float progresso) {
+void imprimirBarraProgresso(float progresso)
+{
     int larguraBarra = 50; // largura da barra
     int pos = (int)(larguraBarra * progresso);
-    
+
     // imprimir a barra
     printf("[");
-    for (int i = 0; i < larguraBarra; ++i) {
-        if (i < pos) {
+    for (int i = 0; i < larguraBarra; ++i)
+    {
+        if (i < pos)
+        {
             printf("=");
-        } else if (i == pos) {
+        }
+        else if (i == pos)
+        {
             printf(">");
-        } else {
+        }
+        else
+        {
             printf(" ");
         }
     }
@@ -180,7 +187,7 @@ void printProcessos(processo processos[], int size, FILE *arquivoLog)
     for (int i = 0; i < size; i++)
     {
         fprintf(arquivoLog, "Processo %02d:\n", processos[i].pid);
-        //fprintf(arquivoLog, "  Tamanho do Processo: %d\n", processos[i].tamanho_processo);
+        // fprintf(arquivoLog, "  Tamanho do Processo: %d\n", processos[i].tamanho_processo);
         fprintf(arquivoLog, "  Numero de Enderecos: %d\n", processos[i].num_enderecos);
 
         // Print enderecos array, if initialized
