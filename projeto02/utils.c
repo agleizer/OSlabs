@@ -28,6 +28,25 @@ void imprimirHelp()
     printf("Pressione Ctrl+\\ para encerrar o programa durante a execução.\n");
 }
 
+void imprimirBarraProgresso(float progresso) {
+    int larguraBarra = 50; // largura da barra
+    int pos = (int)(larguraBarra * progresso);
+    
+    // imprimir a barra
+    printf("[");
+    for (int i = 0; i < larguraBarra; ++i) {
+        if (i < pos) {
+            printf("=");
+        } else if (i == pos) {
+            printf(">");
+        } else {
+            printf(" ");
+        }
+    }
+    printf("] %.0f%%\r", progresso * 100);
+    fflush(stdout); // garantir output imediato
+}
+
 bool carregarConfig(char *NOME_CONFIG, int *TAMANHO_FRAME, int *TAMANHO_PAGINA, int *NUM_FRAMES,
                     int *NUM_PAGINAS, int *NUM_PAGINAS_PROC, int *QTD_PROCESSOS, int *QTD_ACESSOS,
                     int *DELAY_MEM_SEC, char *NOME_LOG)
@@ -119,8 +138,6 @@ bool carregarConfig(char *NOME_CONFIG, int *TAMANHO_FRAME, int *TAMANHO_PAGINA, 
 
 // IMPRESSOES
 
-#include <stdio.h>
-
 void imprimirMemoriaFisica(frame frames[], FILE *arquivoLog, int NUM_FRAMES)
 {
     fprintf(arquivoLog, "Estado da Memoria Fisica:\n");
@@ -136,7 +153,7 @@ void imprimirMemoriaFisica(frame frames[], FILE *arquivoLog, int NUM_FRAMES)
         }
         else
         {
-            fprintf(arquivoLog, "|  LIVRE   |\n");
+            fprintf(arquivoLog, "| LIVRE  |\n");
         }
     }
 
