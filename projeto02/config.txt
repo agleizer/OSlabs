@@ -13,7 +13,7 @@ NUM_FRAMES 6
 // atenção: a memória virtual ainda não foi implementada
 NUM_PAGINAS 10
 
-// quantidade de páginas no espaço de endereçamento do processo
+// quantidade de páginas no espaço de endereçamento do processo (enderecos a serem acessados)
 NUM_PAGINAS_PROC 7
 
 // quanttidade de processos que serão inicializados
